@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+import React from 'react';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
-import SearchProdutos from './components/SearchProdutos';
+import Header from './components/Header';
+import Routes from './routes';
 
-class App extends Component {
-
-  render() {
-    return (
-      <div>
-      <SearchProdutos />
-    </div>
-    );
-  }
-}
+const App = () => (
+  <div className="App">
+    <Header />
+    <Routes />
+  </div>
+);
 
 export default App;

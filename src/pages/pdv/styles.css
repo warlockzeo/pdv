@@ -1,0 +1,91 @@
+.produto-descr {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.choose-produto {
+    display: inline-block;
+}
+
+.choose-produto__quant {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.choose-produto__quant-legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.choose-produto__quant-input {
+    text-align: right;
+    height: 100px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.choose-produto__preco {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.choose-produto__preco-legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.choose-produto__preco-input {
+    text-align: right;
+    height: 100px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.choose-produto__preco-subtotal {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.choose-produto__preco-subtotal-legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.choose-produto__preco-subtotal-input {
+    text-align: right;
+    height: 100px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.itens-vendidos {
+    display: inline-block;
+}
+
+.lista-itens {
+    border: 1px solid #000;
+    height: 45vh;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    margin: 0 0 20px 0;
+}
+
+.total {
+    position: relative;
+}
+
+.total__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.total__input {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 20px;
+}

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import './styles.css';
@@ -23,12 +23,12 @@ class Autocomplete extends Component {
       // Whether or not the suggestion list is shown
       showSuggestions: false,
       // What the user has entered
-      userInput: ""
+      userInput: (this.props.texto?this.props.texto : '')
     };
   }
 
   // Event fired when the input value is changed
-  onChange = e => {
+  onChange = async e => {
     const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
 
@@ -40,34 +40,46 @@ class Autocomplete extends Component {
 
     // Update the user input and filtered suggestions, reset the active
     // suggestion and make sure the suggestions are shown
-    this.setState({
+    await this.setState({
       activeSuggestion: 0,
       filteredSuggestions,
       showSuggestions: true,
       userInput: e.currentTarget.value
     });
+    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user clicks on a suggestion
-  onClick = e => {
+  onClick = async e => {
     // Update the user input and reset the rest of the state
-    this.setState({
-      activeSuggestion: 0,
+    await this.setState({
+      //activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
+    this.props.callbackParent(this.state.userInput);
+  };
+
+  // Event fired when the user mouse over a suggestion item
+  onMouseOver = async e => {
+    // Update the user input and reset the rest of the state
+    await this.setState({
+      //activeSuggestion: 0,
+      userInput: e.currentTarget.innerText
+    });
+    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user presses a key down
-  onKeyDown = e => {
+  onKeyDown = async e => {
     const { activeSuggestion, filteredSuggestions } = this.state;
 
     // User pressed the enter key, update the input and close the
     // suggestions
     if (e.keyCode === 13) {
-      this.setState({
-        activeSuggestion: 0,
+      await this.setState({
+        //activeSuggestion: 0,
         showSuggestions: false,
         userInput: filteredSuggestions[activeSuggestion]
       });
@@ -88,12 +100,37 @@ class Autocomplete extends Component {
 
       this.setState({ activeSuggestion: activeSuggestion + 1 });
     }
+    this.props.callbackParent(this.state.userInput);
   };
+
+  // Event fired when the user clicks in the input field
+  onFocus = async e => {
+    // Update the user input and reset the rest of the state
+    await this.setState({
+      //activeSuggestion: 0,
+      filteredSuggestions: [],
+      showSuggestions: false,
+      userInput: (this.props.texto?this.props.texto : '')
+    });
+    this.props.callbackParent(this.state.userInput);
+  };
+  
+  // Event fired when the user get out from input field
+  onBlur = async e => {
+    // Update the user input and reset the rest of the state
+    await this.setState({
+      showSuggestions: false,
+    });
+    this.props.callbackParent(this.state.userInput);
+    };
 
   render() {
     const {
       onChange,
       onClick,
+      onMouseOver,
+      onFocus, 
+      onBlur,
       onKeyDown,
       state: {
         activeSuggestion,
@@ -119,9 +156,10 @@ class Autocomplete extends Component {
 
               return (
                 <li
-                  className={`suggestions__item, ${className}`}
+                  className={`suggestions__item ${className} `}
                   key={suggestion}
                   onClick={onClick}
+                  onMouseOver={onMouseOver}
                 >
                   {suggestion}
                 </li>
@@ -139,15 +177,17 @@ class Autocomplete extends Component {
     }
 
     return (
-      <Fragment>
-        <input className="input-autocomplete"
+      <div className="autocomplete-block">
+        <input className="input-autocomplete form-control"
           type="text"
           onChange={onChange}
           onKeyDown={onKeyDown}
+          onBlur={onBlur}
+          onFocus={onFocus}
           value={userInput}
         />
         {suggestionsListComponent}
-      </Fragment>
+      </div>
     );
   }
 }
