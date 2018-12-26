@@ -3,6 +3,13 @@
   padding-top: 150px;
 }
 
+@media (max-width: 480px){
+  .App {
+      padding-top: 140px;
+  }   
+}
+
 input {
   border: 1px solid #ff00f7 !important;
+  border-radius: 5px;
 }

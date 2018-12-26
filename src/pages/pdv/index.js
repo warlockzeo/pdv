@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';
 import {Col, Button} from 'reactstrap';
 import Autocomplete from '../../components/Autocomplete';
 
+import Decimais from '../../components/decimais';
+
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import './styles.css';
@@ -46,11 +48,11 @@ class TelaPdv extends Component {
             }
         };
 
-        const totalGeral = () => {
-            if(this.state.itensVendidos.length){ 
+        const totalGeral = (itensArray) => {
+            if(itensArray.length){ 
                 return(
                     decimais(
-                        this.state.itensVendidos
+                        itensArray
                             .map(item => item.subTotal)
                             .reduce((a, s)=>a + s)
                     )
@@ -81,30 +83,32 @@ class TelaPdv extends Component {
             document.querySelector('#preco').value ="0,00";
             document.querySelector('#preco-subtotal').value ="0,00";
             document.querySelector('#quant').value ="1";
-            document.querySelector('#total').value = totalGeral();
+            document.querySelector('#total').value = totalGeral(itensVendidos);
         };
 
         return (
             <div className='tela-pdv'>
 
                 <Col md={12} className='produto-descr'>
-                    <Autocomplete suggestions={this.state.produtos.map(produto => produto.descr)} callbackParent={(texto) => produtoGet(texto)}/>
+                    <Autocomplete suggestions={this.state.produtos.map(produto => produto.descr)} callbackParent={(texto) => produtoGet(texto)} texto='Produto' />
                 </Col>
 
                 <Col md={6} className={`choose-produto`}>
-                    <div className='choose-produto__quant'><span className='choose-produto__quant-legenda'>Quant:</span><input className='form-control choose-produto__quant-input' onChange={mudaSubtotal} type='number' id='quant' min='1' defaultValue='1' /></div>
-                    <div className='choose-produto__preco'><span className='choose-produto__preco-legenda'>Preço:</span><input className='form-control choose-produto__preco-input' onChange={mudaSubtotal} type='text' id='preco' disabled defaultValue='0,00' /></div>
-                    <div className='choose-produto__preco-subtotal'><span className='choose-produto__preco-subtotal-legenda'>Sub-total:</span><input className='form-control choose-produto__preco-subtotal-input' type='text' id='preco-subtotal' disabled defaultValue='0,00' /></div>
-                    <div className='choose-produto__add'><Button onClick={addProd} color='success' className='form-control'>Adicionar</Button></div>
+                    <form id='form-produto' onSubmit={addProd}>
+                        <div className='choose-produto__quant'><span className='choose-produto__quant-legenda'>Quant:</span><input className='form-control choose-produto__quant-input' onChange={mudaSubtotal} type='number' id='quant' min='1' defaultValue='1' /></div>
+                        <div className='choose-produto__preco'><span className='choose-produto__preco-legenda'>Preço:</span><input className='form-control choose-produto__preco-input' onChange={mudaSubtotal} type='text' id='preco' disabled defaultValue='0,00' /></div>
+                        <div className='choose-produto__preco-subtotal'><span className='choose-produto__preco-subtotal-legenda'>Sub-total:</span><input className='form-control choose-produto__preco-subtotal-input' type='text' id='preco-subtotal' disabled defaultValue='0,00' /></div>
+                        <div className='choose-produto__add'><Button onClick={addProd} color='success' className='form-control'>Adicionar</Button></div>
+                    </form>
                 </Col>
 
                 <Col md={6} className={`itens-vendidos`}>
                     <div className='lista-itens'>
                         
                             {this.state.itensVendidos.map(item => (
-                                <Fragment>
-                                <Col md={6} className="lista-itens__ul__li" key={item.id}>{item.descr}</Col>
-                                <Col md={6} className="lista-itens__ul__li">{item.unit}</Col>
+                                <Fragment key={item.id}>
+                                    <Col md={6} className="lista-itens__descr" >{item.descr}</Col>
+                                    <Col md={6} className="lista-itens__unit">{item.unit}</Col>
                                 </Fragment>
                             ))}
                         

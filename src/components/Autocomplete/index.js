@@ -23,7 +23,7 @@ class Autocomplete extends Component {
       // Whether or not the suggestion list is shown
       showSuggestions: false,
       // What the user has entered
-      userInput: (this.props.texto?this.props.texto : '')
+      userInput: ''
     };
   }
 
@@ -110,7 +110,7 @@ class Autocomplete extends Component {
       //activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
-      userInput: (this.props.texto?this.props.texto : '')
+      userInput: ''
     });
     this.props.callbackParent(this.state.userInput);
   };
@@ -185,6 +185,7 @@ class Autocomplete extends Component {
           onBlur={onBlur}
           onFocus={onFocus}
           value={userInput}
+          placeholder={this.props.texto?this.props.texto : ''}
         />
         {suggestionsListComponent}
       </div>

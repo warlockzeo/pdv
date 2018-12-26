@@ -1,6 +1,12 @@
 .produto-descr {
     margin-bottom: 10px;
-    text-align: right;
+    text-align: left;
+}
+
+.produto-descr input {
+    height: 70px;
+    font-size: 36px;
+    font-weight: bold;
 }
 
 .choose-produto {
@@ -20,7 +26,7 @@
 
 .choose-produto__quant-input {
     text-align: right;
-    height: 100px;
+    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
@@ -38,7 +44,7 @@
 
 .choose-produto__preco-input {
     text-align: right;
-    height: 100px;
+    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
@@ -56,7 +62,7 @@
 
 .choose-produto__preco-subtotal-input {
     text-align: right;
-    height: 100px;
+    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
@@ -67,19 +73,21 @@
 
 .lista-itens {
     border: 1px solid #000;
-    height: 45vh;
+    height: 35vh;
     margin-bottom: 20px;
     border-radius: 5px;
     margin: 0 0 20px 0;
+    padding: 10px 0;
 }
 
-.lista-itens__ul {
-    padding: 10px;
-}
-
-.lista-itens__ul__li {
-    list-style: none;
+.lista-itens__descr {
+    display: inline-block;
     text-align: left;
+}
+
+.lista-itens__unit {
+    display: inline-block;
+    text-align: right;
 }
 
 .total {
@@ -93,7 +101,9 @@
 }
 
 .total__input {
-    font-size: 24px;
+    height: 90px;
+    font-size: 36px;
+    color: #ff0000;
     font-weight: bold;
     text-align: right;
     margin-bottom: 20px;

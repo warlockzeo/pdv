@@ -1,0 +1,14 @@
+.tela-produtos div {
+    display: inline-block;
+}
+
+
+.tela-produtos div button {
+    margin-top: -5px;
+}
+
+@media (max-width: 480px){
+    .tela-produtos div button {
+        margin-bottom: 5px;
+    }   
+}
