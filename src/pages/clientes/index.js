@@ -3,31 +3,33 @@ import ListaClientes from '../../components/ListaClientes';
 
 const clientes = [{
         id: 1,
-        name: "Jonathan",
+        nome: "Jonathan",
         endereco: "Rua jose alves dias, 23",
-        bairro: "Centro",
-        fone: "99982-3437"
+        fone: "99982-3437",
+        cpf:'000.000.000-00',
+        rg: '766788',
+        saldo: 0.0
     }, {
         id: 2,
-        name: "Joana",
+        nome: "Joana",
         endereco: "Rua jose alves dias, 23",
         bairro: "Centro",
         fone: "99982-3437"
     }, {
         id: 3,
-        name: "Sansão",
+        nome: "Sansão",
         endereco: "Rua jose alves dias, 23",
         bairro: "Centro",
         fone: "99982-3437"
     }, {
         id: 4,
-        name: "Maria",
+        nome: "Maria",
         endereco: "Rua jose alves dias, 23",
         bairro: "Brasília",
         fone: "99982-3437"
     }, {
         id: 5,
-        name: "Cida",
+        nome: "Cida",
         endereco: "Rua jose alves dias, 23",
         bairro: "Centro",
         fone: "99982-3437"

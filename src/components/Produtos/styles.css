@@ -1,9 +1,3 @@
 .table-produtos {
     margin-top: 10px;
 }
-
-@media (max-width: 480px){
-    .d-xs-none {
-        display: none!important;
-    }
-}

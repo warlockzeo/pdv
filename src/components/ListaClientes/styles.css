@@ -1,14 +1,13 @@
-.tela-clientes div {
+.tela-clientes-barra {
     display: inline-block;
 }
 
-
-.tela-clientes div button {
+.tela-clientes-barra button {
     margin-top: -5px;
 }
 
 @media (max-width: 480px){
-    .tela-clientes div button {
+    .tela-clientes.barra button {
         margin-bottom: 5px;
     }   
 }
