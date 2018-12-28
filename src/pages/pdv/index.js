@@ -2,8 +2,6 @@ import React, {Component, Fragment} from 'react';
 import {Col, Button} from 'reactstrap';
 import Autocomplete from '../../components/Autocomplete';
 
-import Decimais from '../../components/decimais';
-
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import './styles.css';

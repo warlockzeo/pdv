@@ -13,13 +13,20 @@ class ListaClientes extends Component {
 
         this.state = {
             isNovo: true,
+            clientes: this.props.dados,
+            clientesAtuais: this.props.dados,
             clienteAtual:{}
         };
     }
 
-    render(){
-        const clientes = <Clientes dados={this.props.dados} callbackParent={(cliente) => clienteGet(cliente)} />
+    busca = e => {
+        const clientes = this.state.clientes.filter( cliente => cliente.nome.toLowerCase().indexOf(e.currentTarget.value.toLowerCase()) > -1);
+        this.setState({
+            clientesAtuais:clientes
+        });
+    }
 
+    render(){
         const clienteGet = (cliente) => {
             this.setState({
                 clienteAtual:cliente,
@@ -30,9 +37,9 @@ class ListaClientes extends Component {
         let formClientes = '';
 
         if(this.state.isNovo){
-            formClientes = <FormClientes />
+            formClientes = <FormClientes titulo='Novo cliente' />
         } else {
-            formClientes = <FormClientes dados={this.state.clienteAtual} />
+            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} />
         }
 
         return (
@@ -41,10 +48,10 @@ class ListaClientes extends Component {
                     <Button color='success' className='form-control' data-toggle='modal' data-target='#modalForm' onClick={() => this.setState({isNovo:true})}><i className='fas fa-plus'></i> Novo</Button>
                 </Col>
                 <Col md={9} className='tela-clientes-barra'>
-                    <input placeholder='Busca' className='form-control' />
+                    <input placeholder='Busca' className='form-control' onChange={this.busca} />
                 </Col>
                 
-                {clientes}
+                <Clientes dados={this.state.clientesAtuais} callbackParent={(cliente) => clienteGet(cliente)} />
                 {formClientes}
             </Fragment>
         );

@@ -37,18 +37,10 @@ const clientes = [{
 
 class TelaClientes extends Component {
     state = {
-        clientes :[]
+        clientes: clientes
     };
 
-    componentDidMount(){
-        this.setState({
-            clientes: clientes
-        });
-    }
-
-    render(){
-
-        
+     render(){
         return (
             <div className="tela-clientes col-md-12">
                 <ListaClientes dados={this.state.clientes} />
