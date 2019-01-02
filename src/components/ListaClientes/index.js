@@ -27,12 +27,17 @@ class ListaClientes extends Component {
     }
 
     render(){
+        console.log('lista'+this.state.clientes);
         const clienteGet = (cliente) => {
             this.setState({
                 clienteAtual:cliente,
                 isNovo: false
             });
         };
+
+        const gravarNovoCliente = (cliente) => {
+
+        }
 
         let formClientes = '';
 

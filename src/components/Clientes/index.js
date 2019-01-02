@@ -17,7 +17,7 @@ class Clientes extends Component {
     }
 
     render() {
-
+        console.log(this.props.dados);
         const clientes = this.props.dados.map((cliente) => 
             <tr key={cliente.id} onMouseOver={() => this.setState({clienteAtual:cliente})}>
                 <td className='text-left'>{cliente.nome}</td>
