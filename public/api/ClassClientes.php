@@ -25,16 +25,22 @@
                 $i++;
             }
 
-            print_r($j);
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+
+            //print_r($j);
             echo json_encode($j);
         }
 
-        public function deleteCliente($id)
+        public function apagaCliente($id)
         {
             $BFetch=$this->conectaDB()->prepare("DELETE FROM clientes WHERE id=$id");
             $BFetch->execute();
 
-            echo json_enconde(["resp"=>"ok"]);
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+
+            echo '{"resp":"ok"}';
         }
 
     }

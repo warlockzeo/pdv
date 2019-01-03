@@ -27,7 +27,7 @@ class FormClientes extends Component {
 
     onChangeInput = () => {
         this.setState({
-            id: this.props.dados.id,
+            //id: this.props.dados.id||'',
             nome: document.getElementById('nome').value,
             endereco: document.getElementById('endereco').value,
             cpf: document.getElementById('cpf').value,

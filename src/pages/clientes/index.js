@@ -30,15 +30,16 @@ class TelaClientes extends Component {
     }
 
     excluir = (cliente) => {
-        //console.log(cliente.cliente);
-        fetch(`http://pdv/delete/${cliente.cliente}`)
-        .then((response)=>response.json())
-        .then((responseJson)=>
-        {
-            if(responseJson.resp==='ok'){
-                this.exibirClientes();
-            }
-        })
+        if (window.confirm("Confirma exclusão?")) {
+            fetch(`http://pdv/apagar/${cliente.cliente}`)
+            .then((response)=>response.json())
+            .then((responseJson)=>
+            {
+                if(responseJson.resp==='ok'){
+                    this.exibirClientes();
+                }
+            })
+        }
     }
 
     render(){
