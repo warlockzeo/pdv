@@ -2,13 +2,9 @@ import React, {Component} from 'react';
 import ListaClientes from '../../components/ListaClientes';
 
 class TelaClientes extends Component {
-    constructor(){
-        super();
-        this.state = {
-            clientes: []
-        };
-        this.exibirClientes();
-    }
+    state = {
+        clientes: []
+    };
 
     exibirClientes(){
         fetch("http://localhost/react/pdv/public/api/")
@@ -21,8 +17,11 @@ class TelaClientes extends Component {
         })
     }
 
+    componentDidMount(){
+        this.exibirClientes();
+    }
+
      render(){
-        console.log(this.state.clientes);
         return (
             <div className="tela-clientes col-md-12">
                 <ListaClientes dados={this.state.clientes} />

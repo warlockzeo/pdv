@@ -12,51 +12,86 @@ class ListaClientes extends Component {
         super(props);
 
         this.state = {
-            isNovo: true,
-            clientes: this.props.dados,
-            clientesAtuais: this.props.dados,
-            clienteAtual:{}
+            typeForm: '',
+            clientes: [],
+            clientesAtuais: [],
+            clienteAtual: {}
         };
     }
 
     busca = e => {
-        const clientes = this.state.clientes.filter( cliente => cliente.nome.toLowerCase().indexOf(e.currentTarget.value.toLowerCase()) > -1);
+        const clientes = this.props.dados.filter( cliente => cliente.nome.toLowerCase().indexOf(e.currentTarget.value.toLowerCase()) > -1);
         this.setState({
             clientesAtuais:clientes
         });
     }
 
+    onClickNovo = () =>{
+        
+        this.setState({
+            typeForm:'novo', 
+            clienteAtual:{}
+        });
+        document.querySelector('input').val='';
+    }
+
     render(){
-        console.log('lista'+this.state.clientes);
-        const clienteGet = (cliente) => {
+        const clienteGet = (retorno) => {
             this.setState({
-                clienteAtual:cliente,
-                isNovo: false
+                clienteAtual:retorno.cliente,
+                typeForm:retorno.status
             });
         };
 
         const gravarNovoCliente = (cliente) => {
-
+            console.log(cliente);
         }
+
+
 
         let formClientes = '';
 
-        if(this.state.isNovo){
-            formClientes = <FormClientes titulo='Novo cliente' />
+        if(this.state.typeForm==='novo'){
+            formClientes = <FormClientes titulo='Novo cliente' callbackParent={(cliente) => gravarNovoCliente(cliente)} typeForm='novo' />
+        } else if(this.state.typeForm==='view') {
+            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} typeForm='view' />
         } else {
-            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} />
+            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} typeForm='update' />
         }
+
+        const listaClientes = this.props.dados.map((cliente) => 
+            <Fragment  key={cliente.id}>
+                <tr onMouseOver={() => this.setState({clienteAtual:cliente})}>
+                    <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} />
+                </tr>
+            </Fragment>
+        );
 
         return (
             <Fragment>
                 <Col md={3} className='tela-clientes-barra'>
-                    <Button color='success' className='form-control' data-toggle='modal' data-target='#modalForm' onClick={() => this.setState({isNovo:true})}><i className='fas fa-plus'></i> Novo</Button>
+                    <Button color='success' className='form-control' data-toggle='modal' data-target='#modalForm' onClick={this.onClickNovo}><i className='fas fa-plus'></i> Novo</Button>
                 </Col>
                 <Col md={9} className='tela-clientes-barra'>
                     <input placeholder='Busca' className='form-control' onChange={this.busca} />
                 </Col>
                 
-                <Clientes dados={this.state.clientesAtuais} callbackParent={(cliente) => clienteGet(cliente)} />
+
+                <table className='table-clientes table table-sm table-hover'>
+                    <thead className='thead-dark'>
+                        <tr>
+                            <th className='text-left'>Nome</th>
+                            <th className='text-left'>Telefone</th>
+                            <th className='d-xs-none text-left'>Bairro</th>
+                            <th className='d-xs-none text-right'>Saldo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listaClientes}
+                    </tbody>
+                </table>
+
                 {formClientes}
             </Fragment>
         );
