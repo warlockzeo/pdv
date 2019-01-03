@@ -21,10 +21,18 @@ class TelaClientes extends Component {
         this.exibirClientes();
     }
 
-     render(){
+    gravar = (cliente) => {
+        console.log(cliente);
+    }
+
+    atualizar = (cliente) => {
+        console.log(cliente);
+    }
+
+    render(){
         return (
             <div className="tela-clientes col-md-12">
-                <ListaClientes dados={this.state.clientes} />
+                <ListaClientes dados={this.state.clientes} gravar={this.gravar} atualizar={this.atualizar} />
             </div>
         );
     };

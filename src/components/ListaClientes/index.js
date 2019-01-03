@@ -19,47 +19,49 @@ class ListaClientes extends Component {
         };
     }
 
-    busca = e => {
+    busca = (e) => {
         const clientes = this.props.dados.filter( cliente => cliente.nome.toLowerCase().indexOf(e.currentTarget.value.toLowerCase()) > -1);
         this.setState({
             clientesAtuais:clientes
         });
     }
 
-    onClickNovo = () =>{
-        
+    onClickNovo = () => {
         this.setState({
             typeForm:'novo', 
             clienteAtual:{}
         });
-        document.querySelector('input').val='';
+        document.querySelector('form').reset();
+    }
+
+    gravar = (cliente) => {
+        this.props.gravar(cliente);
+    }
+
+    atualizar = (cliente) => {
+        this.props.atualizar(cliente);
     }
 
     render(){
-        const clienteGet = (retorno) => {
-            this.setState({
+        const clienteGet = async (retorno) => {
+            await this.setState({
                 clienteAtual:retorno.cliente,
                 typeForm:retorno.status
             });
         };
 
-        const gravarNovoCliente = (cliente) => {
-            console.log(cliente);
-        }
-
-
-
         let formClientes = '';
 
         if(this.state.typeForm==='novo'){
-            formClientes = <FormClientes titulo='Novo cliente' callbackParent={(cliente) => gravarNovoCliente(cliente)} typeForm='novo' />
+            formClientes = <FormClientes titulo='Novo cliente' callbackParent={this.gravar} typeForm='novo' />
         } else if(this.state.typeForm==='view') {
             formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} typeForm='view' />
         } else {
-            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} typeForm='update' />
+            formClientes = <FormClientes titulo='Detalhes do cliente' callbackParent={this.atualizar} dados={this.state.clienteAtual} typeForm='update' />
         }
-
-        const listaClientes = this.props.dados.map((cliente) => 
+        
+        const lista = (this.state.clientesAtuais.length) ? this.state.clientesAtuais : this.props.dados;
+        const listaClientes = lista.map((cliente) => 
             <Fragment  key={cliente.id}>
                 <tr onMouseOver={() => this.setState({clienteAtual:cliente})}>
                     <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} />
