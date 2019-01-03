@@ -42,6 +42,10 @@ class ListaClientes extends Component {
         this.props.atualizar(cliente);
     }
 
+    excluir = (cliente) => {
+        this.props.excluir(cliente);
+    }
+
     render(){
         const clienteGet = async (retorno) => {
             await this.setState({
@@ -64,7 +68,7 @@ class ListaClientes extends Component {
         const listaClientes = lista.map((cliente) => 
             <Fragment  key={cliente.id}>
                 <tr onMouseOver={() => this.setState({clienteAtual:cliente})}>
-                    <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} />
+                    <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} excluir={this.excluir}/>
                 </tr>
             </Fragment>
         );

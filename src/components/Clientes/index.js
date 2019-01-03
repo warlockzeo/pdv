@@ -14,7 +14,7 @@ class Clientes extends Component {
     }
 
     onClickExcluir = async () => {
-        await this.props.callbackParent({cliente:this.props.cliente});
+        await this.props.excluir({cliente:this.props.cliente.id});
     }
 
     render() {

@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	#RewriteCond %{http_host} ^guiagreste.com [nc]
+	#RewriteRule ^(.*)$ http://www.guiagreste.com/$1 [r=301,nc]
+
+	# Página de exibição das marcas
+	#RewriteRule ^lojas/([a-z0-9-]+)/?$ /fabrica/$1 [r=301,nc]
+	#RewriteRule ^fabrica/([a-z0-9-]+)/?$ /mostra.php?loja=$1 [NC]
+
+	#RewriteRule ^([a-z0-9-]+)/?$ /fabrica/$1 [NC]
+
+	RewriteRule ^exibir/?$ /api/index.php?opcao=exibir [NC]
+	RewriteRule ^delete/([0-9-]+)/?$ /api/index.php?opcao=delete&id=$1 [NC]
+
+</IfModule>
