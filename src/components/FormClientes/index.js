@@ -27,7 +27,7 @@ class FormClientes extends Component {
 
     onChangeInput = () => {
         this.setState({
-            //id: this.props.dados.id||'',
+            id:document.getElementById('id').value,
             nome: document.getElementById('nome').value,
             endereco: document.getElementById('endereco').value,
             cpf: document.getElementById('cpf').value,
@@ -40,8 +40,10 @@ class FormClientes extends Component {
     render(){
         const titulo = (this.props.titulo)?<h4 className='modal-title'>{this.props.titulo}</h4>:'';
         
-        const {nome, endereco, fone, cpf, rg, saldo} = this.props.dados || '';
- 
+        const {id, nome, endereco, fone, cpf, rg} = this.props.dados || '';
+        
+        const saldo = (this.props.dados)?this.props.dados.saldo:'0';
+
         let gravar;
         if(this.props.typeForm==='novo'){
             gravar = <button type='button' className='btn btn-success' data-dismiss='modal' onClick={this.onClickGravar}>Gravar</button>
@@ -84,6 +86,7 @@ class FormClientes extends Component {
                                     <label>Saldo:</label>
                                     <input className='form-control input-saldo' type='text' id='saldo' placeholder='Saldo' defaultValue={saldo} onChange={this.onChangeInput} />
                                 </div>
+                                <input type='hidden' id='id' defaultValue={id} />
                             </form>
                         </div>
 

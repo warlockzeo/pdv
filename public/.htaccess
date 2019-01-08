@@ -9,7 +9,9 @@
 
 	#RewriteRule ^([a-z0-9-]+)/?$ /fabrica/$1 [NC]
 
-	RewriteRule ^exibir/?$ /api/index.php?opcao=exibir [NC]
-	RewriteRule ^apagar/([0-9-]+)/?$ /api/index.php?opcao=apagar&id=$1 [NC]
+	RewriteRule ^exibir/([a-z0-9-]+)/?$ /api/index.php?opcao=exibir&tabela=$1 [NC]
+	RewriteRule ^gravar/([a-z0-9-]+)/?$ /api/index.php?opcao=gravar&tabela=$1 [NC]
+	RewriteRule ^atualizar/([a-z0-9-]+)/?$ /api/index.php?opcao=atualizar&tabela=$1 [NC]
+	RewriteRule ^apagar/([a-z0-9-]+)/([0-9-]+)/?$ /api/index.php?opcao=apagar&tabela=$1&id=$2 [NC]
 
 </IfModule>

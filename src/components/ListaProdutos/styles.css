@@ -1,14 +1,25 @@
-.tela-produtos div {
+.tela-produtos-barra {
     display: inline-block;
 }
 
-
-.tela-produtos div button {
+.tela-produtos-barra button {
     margin-top: -5px;
 }
 
+.head-tabela {
+    width: 100%;
+    display: inline-block;
+}
+
+.scroll-tabela {
+    display: inline-block;
+    width: 100%;
+    height: 60vh;
+    overflow-y:scroll;
+}
+
 @media (max-width: 480px){
-    .tela-produtos div button {
+    .tela-produtos.barra button {
         margin-bottom: 5px;
     }   
 }

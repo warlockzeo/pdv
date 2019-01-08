@@ -67,7 +67,7 @@ class ListaClientes extends Component {
         const lista = (this.state.clientesAtuais.length) ? this.state.clientesAtuais : this.props.dados;
         const listaClientes = lista.map((cliente) => 
             <Fragment  key={cliente.id}>
-                <tr onMouseOver={() => this.setState({clienteAtual:cliente})}>
+                <tr style={{display:'flex',flexDirection: 'row', alignItems: 'stretch'}} onMouseOver={() => this.setState({clienteAtual:cliente})}>
                     <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} excluir={this.excluir}/>
                 </tr>
             </Fragment>
@@ -82,21 +82,20 @@ class ListaClientes extends Component {
                     <input placeholder='Busca' className='form-control' onChange={this.busca} />
                 </Col>
                 
-
                 <table className='table-clientes table table-sm table-hover'>
-                    <thead className='thead-dark'>
-                        <tr>
-                            <th className='text-left'>Nome</th>
-                            <th className='text-left'>Telefone</th>
-                            <th className='d-xs-none text-left'>Bairro</th>
-                            <th className='d-xs-none text-right'>Saldo</th>
-                            <th></th>
+                    <thead className='head-tabela thead-dark'>
+                        <tr style={{display:'flex',flexDirection: 'row', alignItems: 'stretch'}}>
+                            <th style={{flex:'0 1 43%'}} className='text-left'>Nome</th>
+                            <th style={{flex:'10%'}} className='d-xs-none text-left'>Telefone</th>
+                            <th style={{flex:'10%'}} className='d-xs-none text-right'>Saldo</th>
+                            <th style={{flex:'1 0 22%'}}></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='scroll-tabela'>
                         {listaClientes}
                     </tbody>
                 </table>
+                
 
                 {formClientes}
             </Fragment>

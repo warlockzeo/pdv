@@ -1,12 +1,12 @@
 <?php 
     include("ClassConexao.php");
 
-    class ClassClientes extends ClassConexao{
+    class ClassProdutos extends ClassConexao{
 
-        #exibir clientes com Json
-        public function exibeClientes()
+        #exibir produtos com Json
+        public function exibeProdutos()
         {
-            $BFetch=$this->conectaDB()->prepare("SELECT * FROM clientes ORDER BY saldo DESC, nome");
+            $BFetch=$this->conectaDB()->prepare("SELECT * FROM produtos ORDER BY descr ASC");
             $BFetch->execute();
 
             $j=[];
@@ -15,12 +15,10 @@
             while($Fetch=$BFetch->fetch(PDO::FETCH_ASSOC)){
                 $j[$i]=[
                     "id"=>$Fetch['id'],
-                    "nome"=>$Fetch['nome'],
-                    "endereco"=>$Fetch['endereco'],
-                    "fone"=>$Fetch['fone'],
-                    "cpf"=>$Fetch['cpf'],
-                    "rg"=>$Fetch['rg'],
-                    "saldo"=>$Fetch['saldo']
+                    "codBarra"=>$Fetch['codBarra'],
+                    "descr"=>$Fetch['descr'],
+                    "preco"=>$Fetch['preco'],
+                    "estoque"=>$Fetch['estoque']
                 ];
                 $i++;
             }
@@ -31,9 +29,9 @@
             echo json_encode($j);
         }
 
-        public function apagaCliente($id)
+        public function apagaProduto($id)
         {
-            $BFetch=$this->conectaDB()->prepare("DELETE FROM clientes WHERE id=$id");
+            $BFetch=$this->conectaDB()->prepare("DELETE FROM produtos WHERE id=$id");
             $BFetch->execute();
 
             header("Access-Control-Allow-Origin:*");
@@ -42,18 +40,16 @@
             echo '{"resp":"ok"}';
         }
 
-        public function gravaCliente()
+        public function gravaProduto()
         {
             $json = file_get_contents('php://input');
             $obj = json_decode($json, TRUE);
-            $nome = $obj['nome'];
-            $endereco = $obj['endereco'];
-            $cpf = $obj['cpf'];
-            $rg = $obj['rg'];
-            $fone = $obj['fone'];
-            $saldo = $obj['saldo'];
+            $codBarra = $obj['codBarra'];
+            $descr = $obj['descr'];
+            $preco = $obj['preco'];
+            $estoque = $obj['estoque'];
 
-            $sql = "INSERT INTO clientes (nome, endereco, fone, cpf, rg, saldo) VALUES ('$nome', '$endereco', '$fone', '$cpf', '$rg', '$saldo')";
+            $sql = "INSERT INTO produtos (codBarra, descr, preco, estoque) VALUES ('$codBarra', '$descr', '$preco', '$estoque')";
             $BFetch=$this->conectaDB()->prepare($sql);
             $BFetch->execute();
 
@@ -63,20 +59,18 @@
             echo '{"resp":"ok", "sql":"'.$sql.'"}';
         }
 
-        public function atualizaCliente()
+        public function atualizaProduto()
         {
             $json = file_get_contents('php://input');
             $obj = json_decode($json, TRUE);
             $id = $obj['id'];
             if($id){
-                $nome = $obj['nome'];
-                $endereco = $obj['endereco'];
-                $cpf = $obj['cpf'];
-                $rg = $obj['rg'];
-                $fone = $obj['fone'];
-                $saldo = $obj['saldo'];
+                $codBarra = $obj['codBarra'];
+                $descr = $obj['descr'];
+                $preco = $obj['preco'];
+                $estoque = $obj['estoque'];
     
-                $sql = "UPDATE clientes SET nome = '$nome', endereco = '$endereco', fone = '$fone', cpf = '$cpf', rg = '$rg', saldo = '$saldo' WHERE id = $id";
+                $sql = "UPDATE produtos SET codBarra = '$codBarra', descr = '$descr', preco = '$preco', estoque = '$estoque' WHERE id = $id";
                 $BFetch=$this->conectaDB()->prepare($sql);
                 $BFetch->execute();
             }
