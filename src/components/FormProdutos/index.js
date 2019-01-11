@@ -23,7 +23,7 @@ class FormProdutos extends Component {
         await document.querySelector('form').reset();
     }
 
-    onChangeInput = () => {
+    onChangeInput = (e) => {
         this.setState({
             id:document.getElementById('id').value,
             codBarra: document.getElementById('codBarra').value,
@@ -38,7 +38,7 @@ class FormProdutos extends Component {
         
         const {id, codBarra, descr} = this.props.dados || '';
         const estoque = (this.props.dados)?this.props.dados.estoque:'0';
-        const preco = (this.props.dados)?this.props.dados.preco:'0';
+        const preco = (this.props.dados)?this.props.dados.preco:'0,00';
 
         let gravar;
         if(this.props.typeForm==='novo'){
@@ -55,7 +55,7 @@ class FormProdutos extends Component {
                     <div className='modal-content'>
                         <div className='modal-header'>
                             {titulo}
-                            <button type='button' className='close' data-dismiss='modal'>&times;</button>
+                            <button type='button' className='close' data-dismiss='modal' onClick={this.onClickFechar}>&times;</button>
                         </div>
                         <div className='modal-body'>
                             <form className='modalForm__form'>

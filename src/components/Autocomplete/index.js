@@ -78,11 +78,14 @@ class Autocomplete extends Component {
     // User pressed the enter key, update the input and close the
     // suggestions
     if (e.keyCode === 13) {
-      await this.setState({
-        //activeSuggestion: 0,
-        showSuggestions: false,
-        userInput: filteredSuggestions[activeSuggestion]
-      });
+      if(e.currentTarget.value){
+        await this.setState({
+          //activeSuggestion: 0,
+          showSuggestions: false,
+          userInput: filteredSuggestions[activeSuggestion]
+        });
+  
+      }
     }
     // User pressed the up arrow, decrement the index
     else if (e.keyCode === 38) {

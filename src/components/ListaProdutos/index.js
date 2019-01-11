@@ -49,7 +49,7 @@ class ListaProdutos extends Component {
     render(){
         const produtoGet = async (retorno) => {
             await this.setState({
-                clienteAtual:retorno.produto,
+                produtoAtual:retorno.produto,
                 typeForm:retorno.status
             });
         };
@@ -96,7 +96,6 @@ class ListaProdutos extends Component {
                     </tbody>
                 </table>
                 
-
                 {formProdutos}
             </Fragment>
         );

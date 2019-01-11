@@ -27,15 +27,13 @@ class TelaProdutos extends Component {
             body:JSON.stringify({
                 codBarra:produto.codBarra,
                 descr:produto.descr,
-                preco:produto.preco,
+                preco:(produto.preco).replace(",","."),
                 estoque:produto.estoque
             })
         })
         .then((response)=>response.json())
         .then((responseJson)=>
         {
-            //console.log(responseJson);
-            //console.log(produto);
             if(responseJson.resp==='ok'){
                 this.exibirProdutos();
             }
@@ -49,15 +47,13 @@ class TelaProdutos extends Component {
                 id:produto.id,
                 codBarra:produto.codBarra,
                 descr:produto.descr,
-                preco:produto.preco,
+                preco:(produto.preco).replace(",","."),
                 estoque:produto.estoque
             })
         })
         .then((response)=>response.json())
         .then((responseJson)=>
         {
-            //console.log(responseJson);
-            //console.log(produto);
             if(responseJson.resp==='ok'){
                 this.exibirProdutos();
             }

@@ -30,14 +30,12 @@ class TelaClientes extends Component {
                 cpf:cliente.cpf,
                 rg:cliente.rg,
                 fone:cliente.fone,
-                saldo:cliente.saldo,
+                saldo:(cliente.saldo).replace(",","."),
             })
         })
         .then((response)=>response.json())
         .then((responseJson)=>
         {
-            //console.log(responseJson);
-            //console.log(cliente);
             if(responseJson.resp==='ok'){
                 this.exibirClientes();
             }
@@ -54,14 +52,12 @@ class TelaClientes extends Component {
                 cpf:cliente.cpf,
                 rg:cliente.rg,
                 fone:cliente.fone,
-                saldo:cliente.saldo,
+                saldo:(cliente.saldo).replace(",","."),
             })
         })
         .then((response)=>response.json())
         .then((responseJson)=>
         {
-            //console.log(responseJson);
-            //console.log(cliente);
             if(responseJson.resp==='ok'){
                 this.exibirClientes();
             }

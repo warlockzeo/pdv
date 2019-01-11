@@ -1,22 +1,17 @@
-import React, {Component} from 'react';
-import {Col, Button} from 'reactstrap';
-import Autocomplete from '../../components/Autocomplete';
-import ItensVendidos from '../../components/pdv/ItensVendidos';
-import ProdutoAtual from '../../components/pdv/ProdutoAtual';
-
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import React, {Component, Fragment} from 'react';
+import TelaPdv from '../../components/TelaPdv';
+import TelaPagamento from '../../components/TelaPagamento';
 
 import './styles.css';
 
-export default class TelaPdv extends Component {
-
+export default class Pdv extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             produtos: [],
-            produtoAtual: [],
-            itensVendidos: []
+            clientes: [],
+            pagando:false
         };
     }
 
@@ -31,54 +26,51 @@ export default class TelaPdv extends Component {
         })
     }
 
+    exibirClientes(){
+        fetch("http://pdv/exibir/clientes/")
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                clientes:responseJson
+            });
+        })
+    }
 
-    addProd() {
-        let itensVendidos = [];
-
-        itensVendidos = Object.assign(itensVendidos,this.state.itensVendidos);
-
-        let item = {
-            id: this.state.itensVendidos.length + 1,
-            descr: this.state.produtoAtual[0].descr,
-            quant: document.getElementById('quant').value,
-            unit: this.state.produtoAtual[0].preco,
-            subTotal: this.state.produtoAtual[0].preco * document.getElementById('quant').value
-        };
-        
-        itensVendidos.push(item);
-
+    pagarAgora = (itensVendidos) => {
         this.setState({
-            itensVendidos: itensVendidos
+            pagando:true,
+            itensVendidos:itensVendidos
         });
-    };
+    }
+
+    //recebe os dados de pagamento e da venda e envia para pi para gravar no banco de dados
+    pagar = (resp) => {
+        //1º gravar dados da venda(valor,id do cliente, total pago, etc)
+        fetch("http://pdv/exibir/clientes/")
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                clientes:responseJson
+            });
+        })
+    }
 
     componentDidMount(){
         this.exibirProdutos();
+        this.exibirClientes();
     }
 
-    render(){
-        const produtoGet = (texto) => {
-            this.setState({produtoAtual: this.state.produtos.filter(produto => texto.indexOf(produto.descr) > -1)});
-            if(this.state.produtoAtual.length){
-                document.querySelector('#quant').focus();
-            }
-        };
-        
-        return (
-            <div className='tela-pdv'>
-
-                <Col md={12} className='produto-descr'>
-                    <Autocomplete suggestions={this.state.produtos.map(produto => `${produto.codBarra} ${produto.descr}`)} callbackParent={(texto) => produtoGet(texto)} texto='Produto' />
-                </Col>
-
-                <Col md={6} className={`choose-produto`}>
-                    <ProdutoAtual dados={this.state.produtoAtual[0]} callbackParent={(item)=>this.addProd(item)} />
-                </Col>
-                <Col md={6} className={`itens-vendidos`}>
-                    <ItensVendidos dados={this.state.itensVendidos} />
-                    <div className='btn-pagar'><Button color='success' className="form-control">Pagar Agora</Button></div>
-                </Col>
-            </div>
+    render() {
+        const toggleTela = (this.state.pagando)?
+        <TelaPagamento itens={this.state.itensVendidos} clientes={this.state.clientes} callbackParent={(resp) => this.pagar(resp)} />
+        :
+        <TelaPdv produtos={this.state.produtos} callbackParent={(itensVendidos) => this.pagarAgora(itensVendidos)} />
+        return(
+            <Fragment>
+                {toggleTela}
+            </Fragment>
         );
-    };
+    }
 }
