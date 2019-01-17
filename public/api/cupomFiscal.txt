@@ -1,0 +1,30 @@
+
+DéjàVu Boutique 
+Nome da empresa 
+Endereço 
+Centro - Taquaritinga do Norte - PE 
+Cep: 55790-000 
+CNPJ: 
+Fone:  
+
+----------------
+Cupom não fiscal
+----------------
+
+Consumidor: Mario Leandro
+
+----------------
+# | Descr | QTD | VL UN | SUBTOTAL
+----------------
+1 | anel | 2 | 15.93 | 31.86 
+2 | Bolsa | 3 | 59.00 | 177 
+3 | Pulseira | 5 | 20.00 | 100 
+
+----------------
+Total 308.86 
+Desconto 8.86 
+Subtotal 300.00 
+Forma de Pagamento  
+Dinheiro 300.00 
+Resta 0.00 
+----------------

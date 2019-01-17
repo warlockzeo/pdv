@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {Col, Button} from 'reactstrap';
+
 import Autocomplete from '../../components/Autocomplete';
 import ItensVendidos from '../../components/pdv/ItensVendidos';
 import ProdutoAtual from '../../components/pdv/ProdutoAtual';
 
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+//import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 export default class TelaPdv extends Component {
     constructor(props) {
@@ -23,22 +24,28 @@ export default class TelaPdv extends Component {
     }
 
     addProd() {
-        let itensVendidos = [];
+        let itensVendidos = this.state.itensVendidos.filter((item) => item.id !== this.state.produtoAtual[0].id);
+        const itemRepetido = this.state.itensVendidos.filter((item) => item.id === this.state.produtoAtual[0].id);
 
-        itensVendidos = Object.assign(itensVendidos,this.state.itensVendidos);
+        let quant;
+        if(itemRepetido.length){
+            quant  = parseInt(document.getElementById('quant').value,10) + parseInt(itemRepetido[0].quant,10);
+        } else {
+            quant = parseInt(document.getElementById('quant').value,10);
+        }
 
-        let item = {
-            id: this.state.itensVendidos.length + 1,
+        const item = {
+            id: this.state.produtoAtual[0].id,
             descr: this.state.produtoAtual[0].descr,
-            quant: document.getElementById('quant').value,
+            quant: quant,
             unit: this.state.produtoAtual[0].preco,
-            subTotal: this.state.produtoAtual[0].preco * document.getElementById('quant').value
+            subTotal: this.state.produtoAtual[0].preco * quant
         };
-        
+
         itensVendidos.push(item);
 
         this.setState({
-            itensVendidos: itensVendidos,
+            itensVendidos,
             produtoAtual:[]
         });
     };
@@ -50,6 +57,11 @@ export default class TelaPdv extends Component {
             this.setState({produtoAtual: this.props.produtos.filter(produto => texto.indexOf(produto.descr) > -1)});
             if(this.state.produtoAtual.length){
                 document.querySelector('#quant').focus();
+                document.querySelector('#quant').select();
+            } else {
+                if(this.state.itensVendidos.length){
+                    this.pagar();
+                }
             }
         };
         

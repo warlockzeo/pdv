@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import {Button} from 'reactstrap';
+
 import Autocomplete from '../../components/Autocomplete';
 import ItensVendidos from '../../components/pdv/ItensVendidos';
 
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import './styles.css';
 
 export default class TelaPagamento extends Component {
     constructor(props) {
@@ -13,9 +14,10 @@ export default class TelaPagamento extends Component {
             itensVendidos: this.props.itens,
             clienteAtual: [],
             desconto: 0,
-            total: parseFloat(this.props.itens.map(item => item.subTotal).reduce( (a,p) => a + p ))||0,
+            total:parseFloat(this.props.itens.map(item => item.subTotal).reduce( (a,p) => a + p ))||0,
+            totalAPagar:parseFloat(this.props.itens.map(item => item.subTotal).reduce( (a,p) => a + p ))||0,
             pago:0,
-            resta:0
+            resta:parseFloat(this.props.itens.map(item => item.subTotal).reduce( (a,p) => a + p ))||0,
         };
     }
 
@@ -28,6 +30,7 @@ export default class TelaPagamento extends Component {
                 desconto: this.state.desconto,
                 totalAPagar: this.state.total - this.state.desconto,
                 pago:this.state.pago,
+                formaPg:'',
                 resta:(this.state.resta>0)?this.state.resta:0
             }
         });
@@ -35,56 +38,69 @@ export default class TelaPagamento extends Component {
 
     render(){
         const descontoOnChange = async e => {
-            await this.setState({ desconto: e.currentTarget.value || 0 });
+            let desconto = e.currentTarget.value.replace(',','.');
+            desconto = parseFloat(desconto).toFixed(2);
+            if(!isNaN(desconto)){
+                await this.setState({ 
+                    desconto: desconto,
+                    totalAPagar: this.state.total - desconto
+                });
+            }
         }
     
         const descontoOnKeyDown = e => {
             if (e.keyCode === 13) {
                 document.querySelector('.venda__pago__input').focus();
+                document.querySelector('.venda__pago__input').select();
             };
         }
 
         const pagoOnChange = async e => {
-            await this.setState({ 
-                pago: e.currentTarget.value || 0, 
-                resta: (parseFloat(this.state.total) - parseFloat(this.state.desconto)) - parseFloat(e.currentTarget.value)
-            });
+            let pago = e.currentTarget.value.replace(',','.');
+            pago = parseFloat(pago).toFixed(2);
+            if(!isNaN(pago)){
+                await this.setState({ 
+                    pago: e.currentTarget.value, 
+                    resta: (this.state.total - this.state.desconto) - pago
+                });
+            }
         }
     
         const pagoOnKeyDown = e => {
             if (e.keyCode === 13) {
-                document.querySelector('.btn-pagar').focus();
+                //document.querySelector('.btn-pagar').focus();
+                this.pagar();
             };
         }
-        
-        const onBlur = e => {
-            let x = document.querySelectorAll('input');
-            x.forEach(
-                (y)=>{
-                    if((y.value+2)>2){
-                        y.value = parseFloat(y.value).toFixed(2).replace('.',',')
-                    }
-                }
-            );
+    
+        const onBlur = async(e) => {
+            let valor = e.currentTarget.value.replace(',','.');
+            valor = parseFloat(valor).toFixed(2).replace('.',',');
+            e.currentTarget.value = valor;
         }
 
         const clienteGet = (texto) => {
             this.setState({clienteAtual: this.props.clientes.filter(cliente => texto.indexOf(cliente.nome) > -1)});
+            if(this.state.clienteAtual.length){
+                document.querySelector('.venda__desconto__input').focus();
+                document.querySelector('.venda__desconto__input').select();
+            } 
         };
         
         const cliente = (this.state.clienteAtual.length)?this.state.clienteAtual[0]:'';
+        let saldoCliente = (cliente.saldo>0)?(<div className='saldo-devedor'>Saldo devedor: {cliente.saldo}</div>):'';
 
-        const saldoCliente = (this.state.clienteAtual.saldo>0)?`{<div>Saldo: ${cliente.saldo}</div>}`:'';
+        const resta = (this.state.resta>0)?parseFloat(this.state.resta).toFixed(2).replace('.',','):parseFloat(this.state.resta*-1).toFixed(2).replace('.',',');
 
         const restaTroco = (this.state.resta>=0)?(
             <Fragment>
                 <span className='venda__resta__legenda'>Resta:</span>
-                <input type='text' className='venda__resta__input form-control' value={this.state.resta||'0,00'} disabled />
+                <input type='text' className='venda__resta__input form-control' value={resta} disabled />
             </Fragment>
         ):(
             <Fragment>
                 <span className='venda__resta__legenda'>Troco:</span>
-                <input type='text' className='venda__troco__input form-control' value={(this.state.resta)*(-1)} disabled />
+                <input type='text' className='venda__troco__input form-control' value={resta} disabled />
             </Fragment>
         );
 
@@ -101,11 +117,11 @@ export default class TelaPagamento extends Component {
                         </div>
                         <div className='venda__desconto'>
                             <span className='venda__desconto__legenda'>Desconto:</span>
-                            <input type='text' className='venda__desconto__input form-control' onBlur={onBlur} onKeyDown={descontoOnKeyDown}  onChange={descontoOnChange} value={this.state.desconto} />
+                            <input type='text' className='venda__desconto__input form-control' onBlur={onBlur} onKeyDown={descontoOnKeyDown}  onChange={descontoOnChange} />
                         </div>
                         <div className='venda__total'>
                             <span className='venda__total__legenda'>Total a Pagar:</span>
-                            <input type='text' className='venda__total__input form-control' value={(this.state.total - parseFloat(this.state.desconto)).toFixed(2).replace('.',',')} disabled />
+                            <input type='text' className='venda__total__input form-control' value={parseFloat(this.state.totalAPagar).toFixed(2).replace('.',',')} disabled />
                         </div>
                         <div className='venda__pago'>
                             <span className='venda__pago__legenda'>Pago:</span>

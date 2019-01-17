@@ -1,17 +1,24 @@
+#<IfModule mod_headers.c>
+    #Header set Access-Control-Allow-Origin "*"
+#</IfModule>
+
 <IfModule mod_rewrite.c>
 	RewriteEngine on
-	#RewriteCond %{http_host} ^guiagreste.com [nc]
-	#RewriteRule ^(.*)$ http://www.guiagreste.com/$1 [r=301,nc]
+	
+	RewriteRule ^imprimeCupom/?$ /api/index.php?opcao=imprimeCupom&tabela=impressao [NC]
+	
+	RewriteRule ^exibirItensVendidos/?$ /api/index.php?opcao=exibirItensVendidos&tabela=itensVendidos [NC]
+	RewriteRule ^gravarItensVendidos/?$ /api/index.php?opcao=gravarItensVendidos&tabela=itensVendidos [NC]
 
-	# Página de exibição das marcas
-	#RewriteRule ^lojas/([a-z0-9-]+)/?$ /fabrica/$1 [r=301,nc]
-	#RewriteRule ^fabrica/([a-z0-9-]+)/?$ /mostra.php?loja=$1 [NC]
+	RewriteRule ^adicionaEstoque/?$ /api/index.php?opcao=adicionaEstoque&tabela=produtos [NC]
+	RewriteRule ^diminuiEstoque/?$ /api/index.php?opcao=diminuiEstoque&tabela=produtos [NC]
 
-	#RewriteRule ^([a-z0-9-]+)/?$ /fabrica/$1 [NC]
+	RewriteRule ^atualizaSaldo/?$ /api/index.php?opcao=atualizaSaldo&tabela=clientes [NC]
 
 	RewriteRule ^exibir/([a-z0-9-]+)/?$ /api/index.php?opcao=exibir&tabela=$1 [NC]
 	RewriteRule ^gravar/([a-z0-9-]+)/?$ /api/index.php?opcao=gravar&tabela=$1 [NC]
 	RewriteRule ^atualizar/([a-z0-9-]+)/?$ /api/index.php?opcao=atualizar&tabela=$1 [NC]
 	RewriteRule ^apagar/([a-z0-9-]+)/([0-9-]+)/?$ /api/index.php?opcao=apagar&tabela=$1&id=$2 [NC]
 
+	RewriteRule ^([a-z0-9-]+)/?$ /index.html [NC]
 </IfModule>

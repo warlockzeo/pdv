@@ -87,6 +87,25 @@
             echo '{"resp":"ok", "sql":"'.$sql.'"}';
         }
 
+        public function atualizaSaldo()
+        {
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, TRUE);
+            $id = $obj['id'];
+            if($id){
+                $saldo = $obj['saldo'];
+    
+                $sql = "UPDATE clientes SET saldo = saldo + $saldo WHERE id = $id";
+                $BFetch=$this->conectaDB()->prepare($sql);
+                $BFetch->execute();
+            }
+
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+  
+            echo '{"resp":"ok", "sql":"'.$sql.'"}';
+        }
+
     }
     
 ?>

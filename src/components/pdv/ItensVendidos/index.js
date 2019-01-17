@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import ItemVendido from '../ItemVendido';
 
+import './styles.css';
 export default class ItensVendidos extends Component {    
     render(){
         const total = (this.props.dados.length)?

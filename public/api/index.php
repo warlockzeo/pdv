@@ -19,6 +19,10 @@
         elseif($_GET['opcao']=='atualizar') {
             $clientes->atualizaCliente();
         }
+
+        elseif($_GET['opcao']=='atualizaSaldo') {
+            $clientes->atualizaSaldo();
+        }
     } else if($_GET['tabela']=='produtos'){
         include("ClassProdutos.php");
 
@@ -39,8 +43,49 @@
         elseif($_GET['opcao']=='atualizar') {
             $produtos->atualizaProduto();
         }
-    }
 
+        elseif($_GET['opcao']=='diminuiEstoque') {
+            $produtos->diminuiEstoque();
+        }
+
+        elseif($_GET['opcao']=='adicionaEstoque') {
+            $produtos->adicionaEstoque();
+        }
+    } else if($_GET['tabela']=='vendas'){
+        include("ClassVendas.php");
+
+        $vendas=new ClassVendas();
+
+        if($_GET['opcao']=='exibir'){
+            $vendas->exibeVendas();
+        } 
+        
+        elseif($_GET['opcao']=='gravar') {
+            $vendas->gravaVenda();    
+        }
+        
+    } else if($_GET['tabela']=='itensVendidos'){
+        include("ClassItensVendidos.php");
+
+        $itensVendidos=new ClassItensVendidos();
+
+        if($_GET['opcao']=='exibirItensVendidos'){
+            $itensVendidos->exibeItensVendidos();
+        } 
+        
+        elseif($_GET['opcao']=='gravarItensVendidos') {
+            $itensVendidos->gravaItensVendidos();    
+        }
+    } else if($_GET['tabela']=='impressao'){
+        include("ClassImprime.php");
+
+        $imprime=new ClassImprime();
+
+        if($_GET['opcao']=='imprimeCupom'){
+            $imprime->imprimeCupom();
+        } 
+        
+    } 
 
 
 

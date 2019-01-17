@@ -25,6 +25,13 @@ class Autocomplete extends Component {
       // What the user has entered
       userInput: ''
     };
+    
+  }
+
+  _input: ?HTMLInputElement;
+
+  componentDidMount() {
+    this._input.focus();
   }
 
   // Event fired when the input value is changed
@@ -46,7 +53,6 @@ class Autocomplete extends Component {
       showSuggestions: true,
       userInput: e.currentTarget.value
     });
-    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user clicks on a suggestion
@@ -58,7 +64,6 @@ class Autocomplete extends Component {
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
-    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user mouse over a suggestion item
@@ -68,7 +73,6 @@ class Autocomplete extends Component {
       //activeSuggestion: 0,
       userInput: e.currentTarget.innerText
     });
-    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user presses a key down
@@ -84,8 +88,8 @@ class Autocomplete extends Component {
           showSuggestions: false,
           userInput: filteredSuggestions[activeSuggestion]
         });
-  
       }
+      this.props.callbackParent(this.state.userInput);
     }
     // User pressed the up arrow, decrement the index
     else if (e.keyCode === 38) {
@@ -103,7 +107,6 @@ class Autocomplete extends Component {
 
       this.setState({ activeSuggestion: activeSuggestion + 1 });
     }
-    this.props.callbackParent(this.state.userInput);
   };
 
   // Event fired when the user clicks in the input field
@@ -115,7 +118,6 @@ class Autocomplete extends Component {
       showSuggestions: false,
       userInput: ''
     });
-    this.props.callbackParent(this.state.userInput);
   };
   
   // Event fired when the user get out from input field
@@ -124,8 +126,8 @@ class Autocomplete extends Component {
     await this.setState({
       showSuggestions: false,
     });
-    this.props.callbackParent(this.state.userInput);
-    };
+  };
+
 
   render() {
     const {
@@ -180,7 +182,7 @@ class Autocomplete extends Component {
     }
 
     return (
-      <div className="autocomplete-block">
+      <div className={`autocomplete-block ${this.state.focused ? "focused": ""}`}>
         <input className="input-autocomplete form-control"
           type="text"
           onChange={onChange}
@@ -189,6 +191,8 @@ class Autocomplete extends Component {
           onFocus={onFocus}
           value={userInput}
           placeholder={this.props.texto?this.props.texto : ''}
+          autoFocus
+          ref={c => (this._input = c)}
         />
         {suggestionsListComponent}
       </div>

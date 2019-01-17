@@ -81,6 +81,44 @@
             echo '{"resp":"ok", "sql":"'.$sql.'"}';
         }
 
+        public function diminuiEstoque()
+        {
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, TRUE);
+            $id = $obj['id'];
+            if($id){
+                $estoque = $obj['estoque'];
+    
+                $sql = "UPDATE produtos SET estoque = estoque - $estoque WHERE id = $id";
+                $BFetch=$this->conectaDB()->prepare($sql);
+                $BFetch->execute();
+            }
+
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+  
+            echo '{"resp":"ok", "sql":"'.$sql.'"}';
+        }
+
+        public function adicionaEstoque()
+        {
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, TRUE);
+            $id = $obj['id'];
+            if($id){
+                $estoque = $obj['estoque'];
+    
+                $sql = "UPDATE produtos SET estoque = estoque + $estoque WHERE id = $id";
+                $BFetch=$this->conectaDB()->prepare($sql);
+                $BFetch->execute();
+            }
+
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+  
+            echo '{"resp":"ok", "sql":"'.$sql.'"}';
+        }
+
     }
     
 ?>
