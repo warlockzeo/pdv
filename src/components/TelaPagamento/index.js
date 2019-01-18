@@ -26,8 +26,7 @@ export default class TelaPagamento extends Component {
 
         const e = document.querySelector('.venda__pago__formaPg');
         const formaPg = e.options[e.selectedIndex].value;
-
-        console.log(formaPg);
+        
         this.props.callbackParent({
             itensVendidos: this.state.itensVendidos,
             venda:{
@@ -94,7 +93,7 @@ export default class TelaPagamento extends Component {
         };
         
         const cliente = (this.state.clienteAtual.length)?this.state.clienteAtual[0]:'';
-        let saldoCliente = (cliente.saldo>0)?(<div className='saldo-devedor'>Saldo devedor: {cliente.saldo}</div>):'';
+        let saldoCliente = (cliente.saldo>0)?(<div className='saldo-devedor'>Saldo devedor: R$ {cliente.saldo}</div>):'';
 
         const resta = (this.state.resta>0)?parseFloat(this.state.resta).toFixed(2).replace('.',','):parseFloat(this.state.resta*-1).toFixed(2).replace('.',',');
 

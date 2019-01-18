@@ -18,7 +18,7 @@ export default class TelaPdv extends Component {
     }
 
     pagar = () => {
-        if(this.state.itensVendidos){
+        if(this.state.itensVendidos.length){
             this.props.callbackParent(this.state.itensVendidos);
         }
     }

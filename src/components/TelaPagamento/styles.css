@@ -37,6 +37,12 @@
     text-align: right
 }
 
+.saldo-devedor {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+    color: red;
+}
 
 .venda__desconto {
     display: flex;

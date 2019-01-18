@@ -64,6 +64,7 @@ class Autocomplete extends Component {
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
+    this.props.callbackParent('this.state.userInput');
   };
 
   // Event fired when the user mouse over a suggestion item
@@ -126,6 +127,7 @@ class Autocomplete extends Component {
     await this.setState({
       showSuggestions: false,
     });
+    this.props.callbackParent(this.state.userInput);
   };
 
 
