@@ -103,6 +103,12 @@
     left: 10px;
 }
 
+.venda__pago__formaPg {
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
+}
+
 .venda__pago__input {
     flex:1;
     text-align: right;

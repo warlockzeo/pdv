@@ -22,15 +22,21 @@ export default class TelaPagamento extends Component {
     }
 
     pagar = () => {
+        const cliente = (this.state.clienteAtual.length)?this.state.clienteAtual[0].id:0;
+
+        const e = document.querySelector('.venda__pago__formaPg');
+        const formaPg = e.options[e.selectedIndex].value;
+
+        console.log(formaPg);
         this.props.callbackParent({
             itensVendidos: this.state.itensVendidos,
             venda:{
-                cliente: this.state.clienteAtual[0].id,
+                cliente: cliente,
                 total: this.state.total,
                 desconto: this.state.desconto,
                 totalAPagar: this.state.total - this.state.desconto,
                 pago:this.state.pago,
-                formaPg:'',
+                formaPg:formaPg,
                 resta:(this.state.resta>0)?this.state.resta:0
             }
         });
@@ -81,10 +87,10 @@ export default class TelaPagamento extends Component {
 
         const clienteGet = (texto) => {
             this.setState({clienteAtual: this.props.clientes.filter(cliente => texto.indexOf(cliente.nome) > -1)});
-            if(this.state.clienteAtual.length){
+            //if(this.state.clienteAtual.length){
                 document.querySelector('.venda__desconto__input').focus();
                 document.querySelector('.venda__desconto__input').select();
-            } 
+            //} 
         };
         
         const cliente = (this.state.clienteAtual.length)?this.state.clienteAtual[0]:'';
@@ -117,14 +123,20 @@ export default class TelaPagamento extends Component {
                         </div>
                         <div className='venda__desconto'>
                             <span className='venda__desconto__legenda'>Desconto:</span>
-                            <input type='text' className='venda__desconto__input form-control' onBlur={onBlur} onKeyDown={descontoOnKeyDown}  onChange={descontoOnChange} />
+                            <input type='text' className='venda__desconto__input form-control' onBlur={onBlur} onKeyDown={descontoOnKeyDown}  onChange={descontoOnChange} defaultValue='0,00' />
                         </div>
                         <div className='venda__total'>
                             <span className='venda__total__legenda'>Total a Pagar:</span>
                             <input type='text' className='venda__total__input form-control' value={parseFloat(this.state.totalAPagar).toFixed(2).replace('.',',')} disabled />
                         </div>
                         <div className='venda__pago'>
-                            <span className='venda__pago__legenda'>Pago:</span>
+                            <span className='venda__pago__legenda'>Forma Pg:</span>
+
+                            <select className='venda__pago__formaPg'>
+                                <option value='Dinheiro'>Dinheiro</option>
+                                <option value='Cartão'>Cartão</option>
+                            </select>
+
                             <input type='text' className='venda__pago__input form-control' onBlur={onBlur} onKeyDown={pagoOnKeyDown}  onChange={pagoOnChange} defaultValue='0,00' />
                         </div>
                         <div className='venda__resta'>

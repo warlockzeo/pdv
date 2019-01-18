@@ -51,6 +51,7 @@ export default class Pdv extends Component {
     //recebe os dados de pagamento e da venda e envia para pi para gravar no banco de dados
     pagar = (resp) => {
         //1º gravar dados da venda(valor,id do cliente, total pago, etc)
+        const resta = (resp.venda.resta>0)?parseFloat(resp.venda.resta).toFixed(2).replace(',','.'):'0,00';
         fetch(`http://pdv/gravar/vendas/`,{
             method:'POST',
             body:JSON.stringify({
@@ -59,8 +60,8 @@ export default class Pdv extends Component {
                 desconto: parseFloat(resp.venda.desconto).toFixed(2).replace(',','.'),
                 totalAPagar: parseFloat(resp.venda.totalAPagar).toFixed(2).replace(',','.'),
                 pago:parseFloat(resp.venda.pago).toFixed(2).replace(',','.'),
-                formaPg:'',
-                resta:parseFloat(resp.venda.resta).toFixed(2).replace(',','.')
+                formaPg:resp.venda.formaPg,
+                resta:resta
             })
         })
         .then((response)=>response.json())
@@ -139,7 +140,7 @@ export default class Pdv extends Component {
                     desconto: parseFloat(resp.venda.desconto).toFixed(2).replace(',','.'),
                     totalAPagar: parseFloat(resp.venda.totalAPagar).toFixed(2).replace(',','.'),
                     pago:parseFloat(resp.venda.pago).toFixed(2).replace(',','.'),
-                    formaPg:'',
+                    formaPg:resp.venda.formaPg,
                     resta:parseFloat(resp.venda.resta).toFixed(2).replace(',','.')
                 },
                 itensVendidos: resp.itensVendidos
@@ -150,6 +151,7 @@ export default class Pdv extends Component {
         {
              if(responseJson.resp==='ok'){
                 console.log(responseJson);
+                window.location.href = '/';
             }
         })//fim do 5º passo
     }
