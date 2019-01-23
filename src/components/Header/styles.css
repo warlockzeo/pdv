@@ -10,6 +10,11 @@
     color: #fff !important;
 }
 
+.dropdown-item:hover {
+    background-color: #ff00f7 !important;
+    color: #ffffff !important;
+}
+
 .bg-dark {
     background-color: #000 !important;
 }

@@ -6,7 +6,11 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink } from 'reactstrap';
+    NavLink,
+    DropdownToggle,
+    DropdownMenu, 
+    UncontrolledDropdown,
+    DropdownItem } from 'reactstrap';
 import './styles.css';
 
 class Header extends Component {
@@ -36,14 +40,20 @@ class Header extends Component {
                     <NavItem>
                         <NavLink href="/produtos/">Produtos</NavLink>
                     </NavItem>
-                    <NavItem>
-                        <NavLink href="/relatorioVendas/">Relatório Vendas</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="/relatorioProdutos/">Relatório Produtos</NavLink>
-                    </NavItem>
+                    <UncontrolledDropdown setActiveFromChild>
+                        <DropdownToggle tag="a" className="nav-link" caret>
+                            Relatórios
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem tag="a" href="/relatorioVendas/">Relatório Vendas</DropdownItem>
+                            <DropdownItem tag="a" href="/relatorioProdutos/">Relatório Produtos</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                     <NavItem>
                         <NavLink href="/pdv/">PDV</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="/back/">Backup</NavLink>
                     </NavItem>
                 </Nav>
                 </Collapse>

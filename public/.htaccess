@@ -5,6 +5,8 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine on
 	
+	RewriteRule ^back/?$ /api/back.php [NC]
+
 	RewriteRule ^historico/vendas/([0-9-]+)/?$ /api/index.php?opcao=historico&tabela=vendas&id=$1 [NC]
 
 	RewriteRule ^imprimeCupom/?$ /api/index.php?opcao=imprimeCupom&tabela=impressao [NC]
