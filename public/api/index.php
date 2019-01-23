@@ -81,9 +81,14 @@
             $itensVendidos->exibeItensVendidos($_GET['id']);
         } 
         
-        elseif($_GET['opcao']=='gravarItensVendidos') {
+        else if($_GET['opcao']=='gravarItensVendidos') {
             $itensVendidos->gravaItensVendidos();    
         }
+
+        if($_GET['opcao']=='relatorioItensVendidos') {
+            $itensVendidos->relatorioItensVendidos();    
+        }
+
     } else if($_GET['tabela']=='impressao'){
         include("ClassImprime.php");
 

@@ -11,7 +11,7 @@
             $datai = $obj['datai'];
             $dataf = (isset($obj['dataf'])) ? $obj['dataf'] : '';
 
-            if(($datai !== '') and ($dataf==='')){
+            if(($datai !== null) and ($dataf==='')){
                 $datas = 'WHERE dataVenda = "'.$datai.'"';
             } else if(($datai !== '') and ($dataf!=='')){
                 $datas = 'WHERE dataVenda >= "'.$datai.'" AND dataVenda <= "'.$dataf.'"';

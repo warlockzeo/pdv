@@ -9,6 +9,7 @@
 
 	RewriteRule ^imprimeCupom/?$ /api/index.php?opcao=imprimeCupom&tabela=impressao [NC]
 	
+	RewriteRule ^relatorioItensVendidos/?$ /api/index.php?opcao=relatorioItensVendidos&tabela=itensVendidos [NC]
 	RewriteRule ^exibirItensVendidos/([0-9-]+)/?$ /api/index.php?opcao=exibirItensVendidos&tabela=itensVendidos&id=$1 [NC]
 	RewriteRule ^gravarItensVendidos/?$ /api/index.php?opcao=gravarItensVendidos&tabela=itensVendidos [NC]
 

@@ -51,6 +51,46 @@
             echo '{"resp":"ok", "sql":"'.$sql.'"}';
         }
 
+        public function relatorioItensVendidos()
+        {
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, TRUE);
+            $datai = $obj['datai'];
+            $dataf = (isset($obj['dataf'])) ? $obj['dataf'] : '';
+
+            if(($datai !== '' ) and ($dataf==='')){
+                $datas = 'WHERE dataVenda = "'.$datai.'"';
+            } else if(($datai !== '') and ($dataf!=='')){
+                $datas = 'WHERE dataVenda >= "'.$datai.'" AND dataVenda <= "'.$dataf.'"';
+            } else {
+                $datas = '';
+            }
+
+            $sql = "SELECT SUM(i.quant) as quantSoma, sum(i.subTotal) as subTotalSoma, v.dataVenda, i.*,p.descr FROM vendas as v RIGHT join itensVendidos as i on v.id = i.idVenda LEFT JOIN produtos as p ON i.idProduto = p.id $datas group by p.descr ";
+            $BFetch=$this->conectaDB()->prepare($sql);
+            $BFetch->execute();
+
+            $j=[];
+            $i=0;
+            
+            while($Fetch=$BFetch->fetch(PDO::FETCH_ASSOC)){
+                $j[$i]=[
+                    "dataVenda"=>$Fetch['dataVenda'],
+                    "id"=>$Fetch['id'],
+                    "produto"=>$Fetch['descr'],
+                    "quant"=>$Fetch['quantSoma'],
+                    "unit"=>$Fetch['unit'],
+                    "subTotal"=>$Fetch['subTotalSoma']
+                ];
+                $i++;
+            }
+
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+
+            echo json_encode($j);
+            //echo $sql;
+        }
     }
     
 ?>
