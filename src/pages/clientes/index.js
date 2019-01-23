@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ListaClientes from '../../components/ListaClientes';
-
+import HistoricoCliente from '../../components/HistoricoCliente';
 class TelaClientes extends Component {
     state = {
-        clientes: []
+        clientes: [],
+        historicoOpen:false
     };
 
-    exibirClientes(){
+    carregaClientes(){
         fetch("http://pdv/exibir/clientes/")
         .then((response)=>response.json())
         .then((responseJson)=>
@@ -17,8 +18,32 @@ class TelaClientes extends Component {
         })
     }
 
+    historico = (cliente) => {
+        fetch(`http://pdv/historico/vendas/${cliente.cliente.id}`)
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                historicoOpen:true,
+                clienteAtual:cliente.cliente,
+                historico:responseJson
+            });
+        })
+    }
+
+    itensVenda = (venda) => {
+        fetch(`http://pdv/exibirItensVendidos/${venda}`)
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                itensVenda:responseJson
+            });
+        })
+    }
+
     componentDidMount(){
-        this.exibirClientes();
+        this.carregaClientes();
     }
 
     gravar = (cliente) => {
@@ -37,7 +62,7 @@ class TelaClientes extends Component {
         .then((responseJson)=>
         {
             if(responseJson.resp==='ok'){
-                this.exibirClientes();
+                this.carregaClientes();
             }
         })
     }
@@ -59,7 +84,7 @@ class TelaClientes extends Component {
         .then((responseJson)=>
         {
             if(responseJson.resp==='ok'){
-                this.exibirClientes();
+                this.carregaClientes();
             }
         })
     }
@@ -71,18 +96,63 @@ class TelaClientes extends Component {
             .then((responseJson)=>
             {
                 if(responseJson.resp==='ok'){
-                    this.exibirClientes();
+                    this.carregaClientes();
                 }
             })
         }
     }
 
+    atualizaSaldo = (retorno) => {
+        fetch(`http://pdv/gravar/vendas/`,{
+            method:'POST',
+            body:JSON.stringify({
+                cliente: retorno.cliente.id,
+                pago: retorno.valor,
+                formaPg:'Dinheiro',
+                operacao:'Pagamento'
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+
+        })
+
+        fetch(`http://pdv/atualizaSaldo/`,{
+            method:'POST',
+            body:JSON.stringify({
+                id:retorno.cliente.id,
+                saldo: -retorno.valor
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                this.carregaClientes();
+            }
+        })
+    }
+
+    lista = () => {
+        this.setState({
+            historicoOpen:false
+        });
+    }
+
     render(){
+        const mostra = (this.state.historicoOpen)?(
+                    <HistoricoCliente cliente={this.state.clienteAtual} historico={this.state.historico} itensVenda={this.state.itensVenda} mostraItens={this.itensVenda} voltar={this.lista} />
+        ):(
+                    <ListaClientes dados={this.state.clientes} gravar={this.gravar} atualizar={this.atualizar} excluir={this.excluir} historico={this.historico} atualizaSaldo={this.atualizaSaldo} />
+        );
+        
         return (
             <div className="tela-clientes col-md-12">
-                <ListaClientes dados={this.state.clientes} gravar={this.gravar} atualizar={this.atualizar} excluir={this.excluir} />
+                {mostra}
             </div>
         );
+
     };
 }
     

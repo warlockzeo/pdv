@@ -7,6 +7,10 @@
         if($_GET['opcao']=='exibir'){
             $clientes->exibeClientes();
         } 
+
+        if($_GET['opcao']=='exibe'){
+            $clientes->exibeCliente();
+        } 
         
         elseif($_GET['opcao']=='apagar') {
             $clientes->apagaCliente($_GET['id']);    
@@ -63,6 +67,10 @@
         elseif($_GET['opcao']=='gravar') {
             $vendas->gravaVenda();    
         }
+
+        elseif($_GET['opcao']=='historico') {
+            $vendas->historico($_GET['id']);    
+        }
         
     } else if($_GET['tabela']=='itensVendidos'){
         include("ClassItensVendidos.php");
@@ -70,7 +78,7 @@
         $itensVendidos=new ClassItensVendidos();
 
         if($_GET['opcao']=='exibirItensVendidos'){
-            $itensVendidos->exibeItensVendidos();
+            $itensVendidos->exibeItensVendidos($_GET['id']);
         } 
         
         elseif($_GET['opcao']=='gravarItensVendidos') {

@@ -6,7 +6,7 @@ class TelaProdutos extends Component {
         produtos: []
     };
 
-    exibirProdutos(){
+    carregaProdutos(){
         fetch("http://pdv/exibir/produtos/")
         .then((response)=>response.json())
         .then((responseJson)=>
@@ -18,7 +18,7 @@ class TelaProdutos extends Component {
     }
 
     componentDidMount(){
-        this.exibirProdutos();
+        this.carregaProdutos();
     }
 
     gravar = (produto) => {
@@ -35,7 +35,7 @@ class TelaProdutos extends Component {
         .then((responseJson)=>
         {
             if(responseJson.resp==='ok'){
-                this.exibirProdutos();
+                this.carregaProdutos();
             }
         })
     }
@@ -55,7 +55,7 @@ class TelaProdutos extends Component {
         .then((responseJson)=>
         {
             if(responseJson.resp==='ok'){
-                this.exibirProdutos();
+                this.carregaProdutos();
             }
         })
     }
@@ -67,7 +67,7 @@ class TelaProdutos extends Component {
             .then((responseJson)=>
             {
                 if(responseJson.resp==='ok'){
-                    this.exibirProdutos();
+                    this.carregaProdutos();
                 }
             })
         }

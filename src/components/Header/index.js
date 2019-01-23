@@ -37,7 +37,10 @@ class Header extends Component {
                         <NavLink href="/produtos/">Produtos</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="/relatorios/">Relatórios</NavLink>
+                        <NavLink href="/relatorioVendas/">Relatório Vendas</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="/relatorioProdutos/">Relatório Produtos</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink href="/pdv/">PDV</NavLink>

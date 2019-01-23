@@ -6,7 +6,8 @@
         #exibir ItensVendidos com Json
         public function exibeItensVendidos($id)
         {
-            $BFetch=$this->conectaDB()->prepare("SELECT * FROM itensVendidos WHERE vendaId = $id");
+            $sql = "SELECT i.*,p.descr FROM itensVendidos as i LEFT JOIN produtos as p ON i.idProduto = p.id WHERE i.idVenda = $id";
+            $BFetch=$this->conectaDB()->prepare($sql);
             $BFetch->execute();
 
             $j=[];
@@ -14,7 +15,11 @@
             
             while($Fetch=$BFetch->fetch(PDO::FETCH_ASSOC)){
                 $j[$i]=[
-                    "id"=>$Fetch['id']
+                    "id"=>$Fetch['id'],
+                    "produto"=>$Fetch['descr'],
+                    "quant"=>$Fetch['quant'],
+                    "unit"=>$Fetch['unit'],
+                    "subTotal"=>$Fetch['subTotal']
                 ];
                 $i++;
             }
@@ -23,6 +28,7 @@
             header("Content-type: application/json");
 
             echo json_encode($j);
+            //echo $sql;
         }
 
         public function gravaItensVendidos()

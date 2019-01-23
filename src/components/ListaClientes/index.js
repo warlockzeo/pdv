@@ -4,6 +4,7 @@ import {Col, Button} from 'reactstrap';
 import Clientes from '../Clientes';
 
 import FormClientes from '../../components/FormClientes';
+import FormPagar from '../../components/FormPagar';
 
 import './styles.css';
 
@@ -12,6 +13,7 @@ class ListaClientes extends Component {
         super(props);
 
         this.state = {
+            isFormPagarOpen: false,
             typeForm: '',
             clientes: [],
             clientesAtuais: [],
@@ -29,9 +31,14 @@ class ListaClientes extends Component {
     onClickNovo = () => {
         this.setState({
             typeForm:'novo', 
+            isFormPagarOpen:false,
             clienteAtual:{}
         });
         document.querySelector('form').reset();
+    }
+
+    onClickPagar = (cliente) => {
+        this.setState({isFormPagarOpen:true, clienteAtual:cliente});
     }
 
     gravar = (cliente) => {
@@ -46,6 +53,14 @@ class ListaClientes extends Component {
         this.props.excluir(cliente);
     }
 
+    historico = (cliente) => {
+        this.props.historico(cliente);
+    }
+
+    atualizaSaldo = (retorno) => {
+        this.props.atualizaSaldo(retorno);
+    }
+
     render(){
         const clienteGet = async (retorno) => {
             await this.setState({
@@ -54,21 +69,21 @@ class ListaClientes extends Component {
             });
         };
 
-        let formClientes = '';
+        let mostraFormClientes = '';
 
         if(this.state.typeForm==='novo'){
-            formClientes = <FormClientes titulo='Novo cliente' callbackParent={this.gravar} typeForm='novo' />
-        } else if(this.state.typeForm==='view') {
-            formClientes = <FormClientes titulo='Detalhes do cliente' dados={this.state.clienteAtual} typeForm='view' />
+            mostraFormClientes = <FormClientes titulo='Novo cliente' callbackParent={this.gravar} typeForm='novo' />
         } else {
-            formClientes = <FormClientes titulo='Detalhes do cliente' callbackParent={this.atualizar} dados={this.state.clienteAtual} typeForm='update' />
+            mostraFormClientes = <FormClientes titulo='Detalhes do cliente' callbackParent={this.atualizar} dados={this.state.clienteAtual} typeForm='update' />
         }
+
+        const mostraFormPagar = (this.state.isFormPagarOpen)?<FormPagar atualizaSaldo={this.atualizaSaldo} cliente={this.state.clienteAtual.cliente} />:'';
         
         const lista = (this.state.clientesAtuais.length) ? this.state.clientesAtuais : this.props.dados;
         const listaClientes = lista.map((cliente) => 
             <Fragment  key={cliente.id}>
                 <tr style={{display:'flex',flexDirection: 'row', alignItems: 'stretch'}} onMouseOver={() => this.setState({clienteAtual:cliente})}>
-                    <Clientes cliente={cliente} callbackParent={(cliente) => clienteGet(cliente)} excluir={this.excluir}/>
+                    <Clientes cliente={cliente} historico={this.historico} callbackParent={(cliente) => clienteGet(cliente)} excluir={this.excluir} pagar={(cliente) => this.onClickPagar(cliente)} />
                 </tr>
             </Fragment>
         );
@@ -88,7 +103,7 @@ class ListaClientes extends Component {
                             <th style={{flex:'0 1 43%'}} className='text-left'>Nome</th>
                             <th style={{flex:'10%'}} className='d-xs-none text-left'>Telefone</th>
                             <th style={{flex:'10%'}} className='d-xs-none text-right'>Saldo</th>
-                            <th style={{flex:'1 0 22%'}}></th>
+                            <th style={{flex:'1 0 42%'}}></th>
                         </tr>
                     </thead>
                     <tbody className='scroll-tabela'>
@@ -97,7 +112,8 @@ class ListaClientes extends Component {
                 </table>
                 
 
-                {formClientes}
+                {mostraFormClientes}
+                {mostraFormPagar}
             </Fragment>
         );
     };

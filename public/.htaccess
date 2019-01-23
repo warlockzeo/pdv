@@ -1,13 +1,15 @@
-#<IfModule mod_headers.c>
-    #Header set Access-Control-Allow-Origin "*"
-#</IfModule>
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
 
 <IfModule mod_rewrite.c>
 	RewriteEngine on
 	
+	RewriteRule ^historico/vendas/([0-9-]+)/?$ /api/index.php?opcao=historico&tabela=vendas&id=$1 [NC]
+
 	RewriteRule ^imprimeCupom/?$ /api/index.php?opcao=imprimeCupom&tabela=impressao [NC]
 	
-	RewriteRule ^exibirItensVendidos/?$ /api/index.php?opcao=exibirItensVendidos&tabela=itensVendidos [NC]
+	RewriteRule ^exibirItensVendidos/([0-9-]+)/?$ /api/index.php?opcao=exibirItensVendidos&tabela=itensVendidos&id=$1 [NC]
 	RewriteRule ^gravarItensVendidos/?$ /api/index.php?opcao=gravarItensVendidos&tabela=itensVendidos [NC]
 
 	RewriteRule ^adicionaEstoque/?$ /api/index.php?opcao=adicionaEstoque&tabela=produtos [NC]
