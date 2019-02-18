@@ -110,7 +110,9 @@ class HistoricoCliente extends Component {
                         CPF: {this.props.cliente.cpf}<br />
                         RG: {this.props.cliente.rg}<br />
                         Telefone: {this.props.cliente.fone}<br />
-                        Saldo: <MoedaReal valor={this.props.cliente.saldo} /><br />                    
+                        Saldo: <MoedaReal valor={this.props.cliente.saldo} /><br />
+                        Data do Saldo: <DataBrasil data={this.props.cliente.dataSaldo||'0/0/0'} /><br />
+                        Complemento: {this.props.cliente.complemento}<br />
                     </div>
 
                 </Col>

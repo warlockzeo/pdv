@@ -9,9 +9,12 @@
 
 	RewriteRule ^historico/vendas/([0-9-]+)/?$ /api/index.php?opcao=historico&tabela=vendas&id=$1 [NC]
 
+	RewriteRule ^segundaViaCupom/?$ /api/segundaViaCupom.php [NC]
 	RewriteRule ^imprimeCupom/?$ /api/index.php?opcao=imprimeCupom&tabela=impressao [NC]
+
+	RewriteRule ^fechamentoDeCaixa/?$ /api/index.php?opcao=fechamentoCaixa&tabela=vendas [NC]
 	
-	RewriteRule ^relatorioItensVendidos/?$ /api/index.php?opcao=relatorioItensVendidos&tabela=itensVendidos [NC]
+	RewriteRule ^relatoriosItensVendidos/?$ /api/index.php?opcao=relatorioItensVendidos&tabela=itensVendidos [NC]
 	RewriteRule ^exibirItensVendidos/([0-9-]+)/?$ /api/index.php?opcao=exibirItensVendidos&tabela=itensVendidos&id=$1 [NC]
 	RewriteRule ^gravarItensVendidos/?$ /api/index.php?opcao=gravarItensVendidos&tabela=itensVendidos [NC]
 
@@ -19,6 +22,8 @@
 	RewriteRule ^diminuiEstoque/?$ /api/index.php?opcao=diminuiEstoque&tabela=produtos [NC]
 
 	RewriteRule ^atualizaSaldo/?$ /api/index.php?opcao=atualizaSaldo&tabela=clientes [NC]
+
+	RewriteRule ^devedores/?$ /api/index.php?opcao=devedores&tabela=clientes [NC]
 
 	RewriteRule ^exibir/([a-z0-9-]+)/?$ /api/index.php?opcao=exibir&tabela=$1 [NC]
 	RewriteRule ^gravar/([a-z0-9-]+)/?$ /api/index.php?opcao=gravar&tabela=$1 [NC]

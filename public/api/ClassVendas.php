@@ -19,7 +19,7 @@
                 $datas = '';
             }
             
-            $sql = "SELECT v.*, c.nome FROM vendas as v LEFT JOIN clientes as c ON v.idCliente = c.id $datas ORDER BY dataVenda ASC ";
+            $sql = "SELECT v.*, c.nome FROM vendas as v LEFT JOIN clientes as c ON v.idCliente = c.id $datas ORDER BY dataVenda ASC, id ";
             $BFetch=$this->conectaDB()->prepare($sql);
             $BFetch->execute();
 
@@ -64,6 +64,44 @@
             $operacao = $obj['operacao'];
 
             $dataVenda = date('Y/m/d');
+
+            $sql = "INSERT INTO vendas (idCliente, total, desconto, totalAPagar, pago, formaPg, resta, dataVenda, operacao) VALUES ('$idCliente', '$total', '$desconto', '$totalAPagar', '$pago', '$formaPg', '$resta', '$dataVenda', '$operacao')";
+            $BFetch=$this->conectaDB()->prepare($sql);
+            $BFetch->execute();
+
+            $sql2 = "SELECT id FROM vendas ORDER BY id DESC LIMIT 1";
+            $BFetch=$this->conectaDB()->prepare($sql2);
+            $BFetch->execute();
+            $venda = $BFetch->fetch( PDO::FETCH_ASSOC );
+            $BFetch->closeCursor();
+            
+            header("Access-Control-Allow-Origin:*");
+            header("Content-type: application/json");
+  
+            echo '{"resp":"ok", "sql":"'.$sql.'", "id":"'.$venda['id'].'"}';
+        }
+
+        public function fechamentoCaixa()
+        {
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json, TRUE);
+            $idCliente = $obj['cliente'];
+            $total = (isset($obj['total'])) ? $obj['total'] : '0.00';
+            $desconto = (isset($obj['desconto'])) ? $obj['desconto'] : '0.00';
+            $totalAPagar = (isset($obj['totalAPagar'])) ? $obj['totalAPagar'] : '0.00';
+            $pago = (isset($obj['pago'])) ? $obj['pago'] : '0.00';
+            $formaPg = $obj['formaPg'];
+            $resta = (isset($obj['resta'])) ? $obj['resta'] : '0.00';
+            $operacao = $obj['operacao'];
+
+            $dataVenda = date('Y/m/d');
+
+            $data = explode('/',$dataVenda);
+            $ano = $data[0];
+            $mes = $data[1];
+            $dia = $data[2]+1;
+            $ts= mktime(0,0,0,$mes,$dia,$ano);
+            $dataVenda = date ('Y/m/d',$ts); // isso dever� imprimir 25/12/2003.
 
             $sql = "INSERT INTO vendas (idCliente, total, desconto, totalAPagar, pago, formaPg, resta, dataVenda, operacao) VALUES ('$idCliente', '$total', '$desconto', '$totalAPagar', '$pago', '$formaPg', '$resta', '$dataVenda', '$operacao')";
             $BFetch=$this->conectaDB()->prepare($sql);

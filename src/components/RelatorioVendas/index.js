@@ -17,9 +17,9 @@ export default class RelatorioVendas extends Component {
                             <th style={{flex:'0 1 15%'}} className='text-left'>Cliente</th>
                             <th style={{flex:'0 1 15%'}} className='text-right'>Operação</th>
                             <th style={{flex:'0 1 15%'}}>Total</th>
-                            <th style={{flex:'0 1 15%'}}>Pago</th>
-                            <th style={{flex:'0 1 15%'}}>Forma Pagamento</th>
                             <th style={{flex:'0 1 15%'}}>Crediário</th>
+                            <th style={{flex:'0 1 15%'}}>Forma Pagamento</th>
+                            <th style={{flex:'0 1 15%'}}>Valor Recebido</th>
                         </tr>
                     </thead>
                     <tbody className='relat__scroll-tabela'>

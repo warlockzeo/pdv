@@ -36,7 +36,7 @@ export default class TelaPagamento extends Component {
                 totalAPagar: this.state.total - this.state.desconto,
                 pago:this.state.pago,
                 formaPg:formaPg,
-                resta:(this.state.resta>0)?this.state.resta:0
+                resta:(this.state.resta!==0)?this.state.resta:0,
             }
         });
     }

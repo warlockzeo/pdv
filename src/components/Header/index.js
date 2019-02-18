@@ -47,14 +47,22 @@ class Header extends Component {
                         <DropdownMenu>
                             <DropdownItem tag="a" href="/relatorioVendas/">Relatório Vendas</DropdownItem>
                             <DropdownItem tag="a" href="/relatorioProdutos/">Relatório Produtos</DropdownItem>
+                            <DropdownItem tag="a" href="/relatorioDevedores/">Relatório Devedores</DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                     <NavItem>
                         <NavLink href="/pdv/">PDV</NavLink>
                     </NavItem>
-                    <NavItem>
-                        <NavLink href="/back/">Backup</NavLink>
-                    </NavItem>
+                    <UncontrolledDropdown setActiveFromChild>
+                        <DropdownToggle tag="a" className="nav-link" caret>
+                            Sistema
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem tag="a" href="/back/">Backup</DropdownItem>
+                            <DropdownItem tag="a" href="/fechamentoCaixa/">Fechamento de Caixa</DropdownItem>
+                            <DropdownItem tag="a" href="/segundaViaCupom/">Segunda Via Cupom</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </Nav>
                 </Collapse>
             </Navbar>

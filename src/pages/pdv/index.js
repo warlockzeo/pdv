@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import moment from 'moment';
 import TelaPdv from '../../components/TelaPdv';
 import TelaPagamento from '../../components/TelaPagamento';
 
@@ -12,7 +13,8 @@ export default class Pdv extends Component {
             produtos: [],
             clientes: [],
             pagando:false,
-            vendaId:0
+            vendaId:0,
+            isFechadoCaixa:false
         };
     }
 
@@ -52,6 +54,8 @@ export default class Pdv extends Component {
     pagar = (resp) => {
         //1º gravar dados da venda(valor,id do cliente, total pago, etc)
         const resta = (resp.venda.resta>0)?parseFloat(resp.venda.resta).toFixed(2).replace(',','.'):'0.00';
+        const troco = (resp.venda.resta<0)?parseFloat(resp.venda.resta*-1).toFixed(2).replace(',','.'):'0.00';
+
         fetch(`http://pdv/gravar/vendas/`,{
             method:'POST',
             body:JSON.stringify({
@@ -142,7 +146,8 @@ export default class Pdv extends Component {
                     totalAPagar: parseFloat(resp.venda.totalAPagar).toFixed(2).replace(',','.'),
                     pago:parseFloat(resp.venda.pago).toFixed(2).replace(',','.'),
                     formaPg:resp.venda.formaPg,
-                    resta:parseFloat(resp.venda.resta).toFixed(2).replace(',','.')
+                    resta:resta,
+                    troco:troco
                 },
                 itensVendidos: resp.itensVendidos
             })
@@ -151,25 +156,55 @@ export default class Pdv extends Component {
         .then((responseJson)=>
         {
              if(responseJson.resp==='ok'){
-                window.location.href = '/';
+               window.location.href = '/';
             }
         })//fim do 5º passo
     }
 
-    componentDidMount(){
+    componentDidMount(){ 
         this.carregaProdutos();
         this.carregaClientes();
+
+        const hoje=moment().format('YYYY-MM-DD');
+        const amanha=moment().add(1, "days").format('YYYY-MM-DD');
+        
+        fetch("http://pdv/exibir/vendas/",{
+            method:'POST',
+            body:JSON.stringify({
+                datai:hoje,
+                dataf:amanha
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                vendas: responseJson.filter(venda => (venda.dataVenda === hoje))
+            });
+
+            const fechado = responseJson.filter(venda => (venda.operacao==='Fechamento de caixa')&&(venda.dataVenda === amanha));
+
+            (fechado.length)&&(this.setState({isFechadoCaixa:true}));
+        });
     }
 
     render() {
-        const toggleTela = (this.state.pagando)?
-        <TelaPagamento itens={this.state.itensVendidos} clientes={this.state.clientes} callbackParent={(resp) => this.pagar(resp)} />
-        :
-        <TelaPdv produtos={this.state.produtos} callbackParent={(itensVendidos) => this.pagarAgora(itensVendidos)} />
-        return(
-            <Fragment>
-                {toggleTela}
-            </Fragment>
-        );
+        if(this.state.isFechadoCaixa){
+            return (
+                <div className='fechamento__aviso'>Fechamento já realizado hoje</div>
+            );
+        } else if(this.state.pagando){
+            return (
+                <Fragment>
+                <TelaPagamento itens={this.state.itensVendidos} clientes={this.state.clientes} callbackParent={(resp) => this.pagar(resp)} />
+                </Fragment>
+            );
+        } else {
+            return (
+                <Fragment>
+                <TelaPdv produtos={this.state.produtos} callbackParent={(itensVendidos) => this.pagarAgora(itensVendidos)} />    
+                </Fragment>
+            );
+        }
     }
 }

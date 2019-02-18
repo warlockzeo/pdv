@@ -9,6 +9,10 @@
             $clientes->exibeClientes();
         } 
 
+        if($_GET['opcao']=='devedores'){
+            $clientes->exibeDevedores();
+        }
+
         if($_GET['opcao']=='exibe'){
             $clientes->exibeCliente();
         } 
@@ -67,6 +71,10 @@
         
         elseif($_GET['opcao']=='gravar') {
             $vendas->gravaVenda();    
+        }
+
+        elseif($_GET['opcao']=='fechamentoCaixa') {
+            $vendas->fechamentoCaixa();    
         }
 
         elseif($_GET['opcao']=='historico') {

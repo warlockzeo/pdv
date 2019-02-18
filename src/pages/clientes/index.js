@@ -56,6 +56,8 @@ class TelaClientes extends Component {
                 rg:cliente.rg,
                 fone:cliente.fone,
                 saldo:(cliente.saldo).replace(",","."),
+                dataSaldo:(cliente.dataSaldo),
+                complemento:cliente.complemento,
             })
         })
         .then((response)=>response.json())
@@ -78,6 +80,8 @@ class TelaClientes extends Component {
                 rg:cliente.rg,
                 fone:cliente.fone,
                 saldo:(cliente.saldo).replace(",","."),
+                dataSaldo: cliente.dataSaldo,
+                complemento:cliente.complemento,
             })
         })
         .then((response)=>response.json())

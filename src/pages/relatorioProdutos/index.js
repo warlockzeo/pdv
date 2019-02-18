@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import RelatorioProdutos from '../../components/RelatorioProdutos';
+import RelatoriosProdutos from '../../components/RelatoriosProdutos';
 import RelatorioBarra from '../../components/RelatorioBarra';
 
 import './styles.css';
@@ -12,7 +12,7 @@ export default class TelaRelatorioProdutos extends Component {
     };
 
     carregaVendas(){
-        fetch("http://pdv/relatorioItensVendidos",{
+        fetch("http://pdv/relatoriosItensVendidos",{
             method:'POST',
             body:JSON.stringify({
                 datai:this.state.datai,
@@ -50,7 +50,7 @@ export default class TelaRelatorioProdutos extends Component {
         return (
             <Fragment>
                 <RelatorioBarra datai={this.state.datai} mudaDatai={this.mudaDatai} mudaDataf={this.mudaDataf} />
-                <RelatorioProdutos dados={this.state.produtos} datai={this.state.datai} dataf={this.state.dataf}/>
+                <RelatoriosProdutos dados={this.state.produtos} datai={this.state.datai} dataf={this.state.dataf}/>
             </Fragment>
         );
     }
