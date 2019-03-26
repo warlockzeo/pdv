@@ -13,22 +13,22 @@ Fone: 99223-1394 / 99827-6186
                 Cupom nao fiscal
 ------------------------------------------------
 
-Consumidor: Nao Identificado
-Data: 12/02/2019
+Consumidor: Rafael Baptista
+Data: 21/03/2019
 
 ------------------------------------------------
 # | Descr               | QTD | VL UN | SUBTOTAL
 ------------------------------------------------
-1 | anel                    | 1 | 15.93 | 15.93 
+1 | caderno universitário | 2 | 5.00 | 10.00 
 
 ------------------------------------------------
-Total                                     15.93 
+Total                                     10.00 
 Desconto                                   0.00 
-Subtotal                                  15.93 
+Subtotal                                  10.00 
 Forma de Pagamento                     Dinheiro 
-Dinheiro                                  20.00 
-Resta                                      0.00 
-Troco                                      4.07 
+Dinheiro                                   0.00 
+Resta                                     10.00 
+Troco                                      0.00 
 ------------------------------------------------
 
 
