@@ -1,0 +1,22 @@
+.wrap-historicoCliente {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.cliente-detalhes {
+    flex:1;
+    text-align: left
+}
+
+.cliente-historico {
+    flex:1;
+    height: 70vh;
+    overflow: auto;
+}
+
+.detalhes-evento {
+    flex:1;
+    text-align: left;
+}

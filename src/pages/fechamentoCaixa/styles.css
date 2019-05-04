@@ -1,0 +1,34 @@
+.fechamento {
+    display: flex;
+    height: calc(100vh - 150px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+}
+
+.fechamento__saldo{
+    margin-top: 50px;
+    font-size: 24px;
+    color: green;
+    font-weight: bold;
+}
+
+.fechamento__aviso {
+    margin-top: 50px;
+    font-size: 24px;
+    color: red;
+    font-weight: bold;
+}
+
+.fechamento__form {
+    max-width: 90%;
+    width: 300px;
+    margin-top: 50px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.fechamento__input {
+    margin-bottom: 10px;
+}

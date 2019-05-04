@@ -1,0 +1,59 @@
+.lista-itens {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ff00f7;
+    background-color:#FFFFE0;
+    font-family: 'Courier New', Courier, monospace;
+    height: 35vh;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    margin: 0 0 20px 0;
+    padding: 10px 0;
+
+    flex:1 1 auto;
+}
+
+
+.item {
+    display: flex;
+    flex-direction: row;
+}
+
+.lista-itens__descr {
+    text-align: left;
+    font-weight: bold;
+}
+
+.lista-itens__quant {
+    text-align: right;
+}
+
+.lista-itens__unit {
+    text-align: right;
+}
+
+.total {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:0 1 70px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.total__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.total__input {
+    flex:0 1 70px;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+    color: red;
+    height: 50px;
+}

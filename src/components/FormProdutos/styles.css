@@ -1,0 +1,9 @@
+.modalForm__form div {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.input-saldo {
+    text-align: right;
+}

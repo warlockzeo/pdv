@@ -1,51 +1,162 @@
 import React, {Component} from 'react';
 import ListaClientes from '../../components/ListaClientes';
-
-const clientes = [{
-        id: 1,
-        nome: "Jonathan",
-        endereco: "Rua jose alves dias, 23",
-        fone: "99982-3437",
-        cpf:'000.000.000-00',
-        rg: '766788',
-        saldo: 0.0
-    }, {
-        id: 2,
-        nome: "Joana",
-        endereco: "Rua jose alves dias, 23",
-        bairro: "Centro",
-        fone: "99982-3437"
-    }, {
-        id: 3,
-        nome: "Sansão",
-        endereco: "Rua jose alves dias, 23",
-        bairro: "Centro",
-        fone: "99982-3437"
-    }, {
-        id: 4,
-        nome: "Maria",
-        endereco: "Rua jose alves dias, 23",
-        bairro: "Brasília",
-        fone: "99982-3437"
-    }, {
-        id: 5,
-        nome: "Cida",
-        endereco: "Rua jose alves dias, 23",
-        bairro: "Centro",
-        fone: "99982-3437"
-    }];
-
+import HistoricoCliente from '../../components/HistoricoCliente';
 class TelaClientes extends Component {
     state = {
-        clientes: clientes
+        clientes: [],
+        historicoOpen:false
     };
 
-     render(){
+    carregaClientes(){
+        fetch("http://pdv/exibir/clientes/")
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                clientes:responseJson
+            });
+        })
+    }
+
+    historico = (cliente) => {
+        fetch(`http://pdv/historico/vendas/${cliente.cliente.id}`)
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                historicoOpen:true,
+                clienteAtual:cliente.cliente,
+                historico:responseJson
+            });
+        })
+    }
+
+    itensVenda = (venda) => {
+        fetch(`http://pdv/exibirItensVendidos/${venda}`)
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                itensVenda:responseJson
+            });
+        })
+    }
+
+    componentDidMount(){
+        this.carregaClientes();
+    }
+
+    gravar = (cliente) => {
+        fetch(`http://pdv/gravar/clientes/`,{
+            method:'POST',
+            body:JSON.stringify({
+                nome:cliente.nome,
+                endereco:cliente.endereco,
+                cpf:cliente.cpf,
+                rg:cliente.rg,
+                fone:cliente.fone,
+                saldo:(cliente.saldo).replace(",","."),
+                dataSaldo:(cliente.dataSaldo),
+                complemento:cliente.complemento,
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                this.carregaClientes();
+            }
+        })
+    }
+
+    atualizar = (cliente) => {
+        fetch(`http://pdv/atualizar/clientes/`,{
+            method:'POST',
+            body:JSON.stringify({
+                id:cliente.id,
+                nome:cliente.nome,
+                endereco:cliente.endereco,
+                cpf:cliente.cpf,
+                rg:cliente.rg,
+                fone:cliente.fone,
+                saldo:(cliente.saldo).replace(",","."),
+                dataSaldo: cliente.dataSaldo,
+                complemento:cliente.complemento,
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                this.carregaClientes();
+            }
+        })
+    }
+
+    excluir = (cliente) => {
+        if (window.confirm("Confirma exclusão?")) {
+            fetch(`http://pdv/apagar/clientes/${cliente.cliente}`)
+            .then((response)=>response.json())
+            .then((responseJson)=>
+            {
+                if(responseJson.resp==='ok'){
+                    this.carregaClientes();
+                }
+            })
+        }
+    }
+
+    atualizaSaldo = (retorno) => {
+        fetch(`http://pdv/gravar/vendas/`,{
+            method:'POST',
+            body:JSON.stringify({
+                cliente: retorno.cliente.id,
+                pago: retorno.valor,
+                formaPg:'Dinheiro',
+                operacao:'Pagamento'
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+
+        })
+
+        fetch(`http://pdv/atualizaSaldo/`,{
+            method:'POST',
+            body:JSON.stringify({
+                id:retorno.cliente.id,
+                saldo: -retorno.valor
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                this.carregaClientes();
+            }
+        })
+    }
+
+    lista = () => {
+        this.setState({
+            historicoOpen:false
+        });
+    }
+
+    render(){
+        const mostra = (this.state.historicoOpen)?(
+                    <HistoricoCliente cliente={this.state.clienteAtual} historico={this.state.historico} itensVenda={this.state.itensVenda} mostraItens={this.itensVenda} voltar={this.lista} />
+        ):(
+                    <ListaClientes dados={this.state.clientes} gravar={this.gravar} atualizar={this.atualizar} excluir={this.excluir} historico={this.historico} atualizaSaldo={this.atualizaSaldo} />
+        );
+        
         return (
             <div className="tela-clientes col-md-12">
-                <ListaClientes dados={this.state.clientes} />
+                {mostra}
             </div>
         );
+
     };
 }
     

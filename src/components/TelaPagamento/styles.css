@@ -1,0 +1,156 @@
+.wrap-pagamento {
+    height: 75vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.pagamento {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.pagamento__cliente {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.pagamento__cliente__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.pagamento__cliente input {
+    flex:1;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right
+}
+
+.saldo-devedor {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+    color: red;
+}
+
+.venda__desconto {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.venda__desconto__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.venda__desconto__input {
+    flex:1;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.venda__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.venda__total__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.venda__total__input {
+    flex:1;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.venda__pago {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.venda__pago__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.venda__pago__formaPg {
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
+}
+
+.venda__pago__input {
+    flex:1;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.venda__resta {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.venda__resta__legenda {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.venda__resta__input {
+    flex:1;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+    color: red;
+}
+
+.venda__troco__input {
+    flex:1;
+    text-align: right;
+    font-size: 36px;
+    font-weight: bold;
+    color: green;
+}

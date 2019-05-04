@@ -1,123 +1,210 @@
 import React, {Component, Fragment} from 'react';
-import {Col, Button} from 'reactstrap';
-import Autocomplete from '../../components/Autocomplete';
-
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import moment from 'moment';
+import TelaPdv from '../../components/TelaPdv';
+import TelaPagamento from '../../components/TelaPagamento';
 
 import './styles.css';
 
-class TelaPdv extends Component {
-
+export default class Pdv extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             produtos: [],
-            produtoAtual: [],
-            itensVendidos: []
+            clientes: [],
+            pagando:false,
+            vendaId:0,
+            isFechadoCaixa:false
         };
     }
 
-    componentDidMount(){
-        const produtos = [
-            {id:1,descr:'pulseira',preco: 20.00},
-            {id:2,descr:'anel',preco: 15.35},
-            {id:3,descr:'boné',preco: 16.50},
-            {id:4,descr:'camisa',preco: 19.00}
-        ];
-    
+    //carrega informações dos produtos no state
+    carregaProdutos(){
+        fetch("http://pdv/exibir/produtos/")
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                produtos:responseJson
+            });
+        })
+    }
+
+    //carrega informações dos clientes no state
+    carregaClientes(){
+        fetch("http://pdv/exibir/clientes/")
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            this.setState({
+                clientes:responseJson
+            });
+        })
+    }
+
+    //função do callback para o botão pagar agora no componente telaPdv
+    pagarAgora = (itensVendidos) => {
         this.setState({
-            produtos: produtos
+            pagando:true,
+            itensVendidos:itensVendidos,
         });
     }
 
-    render(){
-        const decimais = (numero) => numero.toFixed(2).replace(".",",");
+    //recebe os dados de pagamento e da venda e envia para pi para gravar no banco de dados
+    pagar = (resp) => {
+        //1º gravar dados da venda(valor,id do cliente, total pago, etc)
+        const resta = (resp.venda.resta>0)?parseFloat(resp.venda.resta).toFixed(2).replace(',','.'):'0.00';
+        const troco = (resp.venda.resta<0)?parseFloat(resp.venda.resta*-1).toFixed(2).replace(',','.'):'0.00';
 
-        const mudaSubtotal = () => {
-            document.querySelector('#preco-subtotal').value = decimais(this.state.produtoAtual[0].preco * document.getElementById('quant').value);
-        };
+        fetch(`http://pdv/gravar/vendas/`,{
+            method:'POST',
+            body:JSON.stringify({
+                cliente: resp.venda.cliente,
+                total: parseFloat(resp.venda.total).toFixed(2).replace(',','.'),
+                desconto: parseFloat(resp.venda.desconto).toFixed(2).replace(',','.'),
+                totalAPagar: parseFloat(resp.venda.totalAPagar).toFixed(2).replace(',','.'),
+                pago:parseFloat(resp.venda.pago).toFixed(2).replace(',','.'),
+                formaPg:resp.venda.formaPg,
+                resta:resta,
+                operacao:'Venda'
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                this.setState({vendaId:responseJson.id});
+                //console.log(responseJson);
+            }
+
+            resp.itensVendidos.forEach( item => {
+                //2º grava itens vendidos
+                fetch(`http://pdv/gravarItensVendidos/`,{
+                    method:'POST',
+                    body:JSON.stringify({
+                        idVenda: responseJson.id,
+                        idProduto: item.id,
+                        quant: item.quant,
+                        unit: parseFloat(item.unit).toFixed(2).replace(',','.'),
+                        subTotal: parseFloat(item.subTotal).toFixed(2).replace(',','.')
+                    })
+                })
+                .then((response)=>response.json())
+                .then((responseJson)=>
+                {
+                    if(responseJson.resp==='ok'){
+                        //console.log(responseJson)
+                    }
+                })
+            });
+        })//fim do 1º passo
+
+        //3º atualiza saldo do cliente
+        if(resp.venda.resta)
+        fetch(`http://pdv/atualizaSaldo/`,{
+            method:'POST',
+            body:JSON.stringify({
+                id: resp.venda.cliente,
+                saldo:parseFloat(resp.venda.resta).toFixed(2).replace(',','.')
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+            if(responseJson.resp==='ok'){
+                //console.log(responseJson.sql)
+            }
+        })
+
+        //4º atualizar estoques
+        resp.itensVendidos.forEach( item => {
+            //atualiza estoques
+            fetch(`http://pdv/diminuiEstoque/`,{
+                method:'POST',
+                body:JSON.stringify({
+                    id: item.id,
+                    estoque: item.quant
+                })
+            })
+            .then((response)=>response.json())
+            .then((responseJson)=>
+            {
+                if(responseJson.resp==='ok'){
+                    //console.log(responseJson)
+                }
+            })
+        });//fim do map()
+
+        //5º imprimir cupom
+        fetch(`http://pdv/imprimeCupom/`,{
+            method:'POST',
+            body:JSON.stringify({
+                venda:{
+                    cliente: resp.venda.cliente,
+                    total: parseFloat(resp.venda.total).toFixed(2).replace(',','.'),
+                    desconto: parseFloat(resp.venda.desconto).toFixed(2).replace(',','.'),
+                    totalAPagar: parseFloat(resp.venda.totalAPagar).toFixed(2).replace(',','.'),
+                    pago:parseFloat(resp.venda.pago).toFixed(2).replace(',','.'),
+                    formaPg:resp.venda.formaPg,
+                    resta:resta,
+                    troco:troco
+                },
+                itensVendidos: resp.itensVendidos
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
+             if(responseJson.resp==='ok'){
+               window.location.href = '/';
+            }
+        })//fim do 5º passo
+    }
+
+    componentDidMount(){ 
+        this.carregaProdutos();
+        this.carregaClientes();
+
+        const hoje=moment().format('YYYY-MM-DD');
+        const amanha=moment().add(1, "days").format('YYYY-MM-DD');
         
-        const produtoGet = (texto) => {
-            this.setState({produtoAtual: this.state.produtos.filter(produto => produto.descr === texto)});
-            if(this.state.produtoAtual.length){
-                document.querySelector('#preco').value = decimais(this.state.produtoAtual[0].preco);
-                mudaSubtotal();
-            }
-        };
-
-        const totalGeral = (itensArray) => {
-            if(itensArray.length){ 
-                return(
-                    decimais(
-                        itensArray
-                            .map(item => item.subTotal)
-                            .reduce((a, s)=>a + s)
-                    )
-                );
-            }
-        };
-
-        const addProd = () => {
-            let itensVendidos = [];
-
-            itensVendidos = Object.assign(itensVendidos,this.state.itensVendidos);
-
-            let item = {
-                id: this.state.itensVendidos.length + 1,
-                descr: this.state.produtoAtual[0].descr,
-                quant: document.getElementById('quant').value,
-                unit: this.state.produtoAtual[0].preco,
-                subTotal: this.state.produtoAtual[0].preco * document.getElementById('quant').value
-            };
-            
-            itensVendidos.push(item);
-
+        fetch("http://pdv/exibir/vendas/",{
+            method:'POST',
+            body:JSON.stringify({
+                datai:hoje,
+                dataf:amanha
+            })
+        })
+        .then((response)=>response.json())
+        .then((responseJson)=>
+        {
             this.setState({
-                itensVendidos: itensVendidos
+                vendas: responseJson.filter(venda => (venda.dataVenda === hoje))
             });
 
-            document.querySelector('.choose-produto input').value="";
-            document.querySelector('#preco').value ="0,00";
-            document.querySelector('#preco-subtotal').value ="0,00";
-            document.querySelector('#quant').value ="1";
-            document.querySelector('#total').value = totalGeral(itensVendidos);
-        };
+            const fechado = responseJson.filter(venda => (venda.operacao==='Fechamento de caixa')&&(venda.dataVenda === amanha));
 
-        return (
-            <div className='tela-pdv'>
+            (fechado.length)&&(this.setState({isFechadoCaixa:true}));
+        });
+    }
 
-                <Col md={12} className='produto-descr'>
-                    <Autocomplete suggestions={this.state.produtos.map(produto => produto.descr)} callbackParent={(texto) => produtoGet(texto)} texto='Produto' />
-                </Col>
-
-                <Col md={6} className={`choose-produto`}>
-                    <form id='form-produto' onSubmit={addProd}>
-                        <div className='choose-produto__quant'><span className='choose-produto__quant-legenda'>Quant:</span><input className='form-control choose-produto__quant-input' onChange={mudaSubtotal} type='number' id='quant' min='1' defaultValue='1' /></div>
-                        <div className='choose-produto__preco'><span className='choose-produto__preco-legenda'>Preço:</span><input className='form-control choose-produto__preco-input' onChange={mudaSubtotal} type='text' id='preco' disabled defaultValue='0,00' /></div>
-                        <div className='choose-produto__preco-subtotal'><span className='choose-produto__preco-subtotal-legenda'>Sub-total:</span><input className='form-control choose-produto__preco-subtotal-input' type='text' id='preco-subtotal' disabled defaultValue='0,00' /></div>
-                        <div className='choose-produto__add'><Button onClick={addProd} color='success' className='form-control'>Adicionar</Button></div>
-                    </form>
-                </Col>
-
-                <Col md={6} className={`itens-vendidos`}>
-                    <div className='lista-itens'>
-                        
-                            {this.state.itensVendidos.map(item => (
-                                <Fragment key={item.id}>
-                                    <Col md={6} className="lista-itens__descr" >{item.descr}</Col>
-                                    <Col md={6} className="lista-itens__unit">{item.unit}</Col>
-                                </Fragment>
-                            ))}
-                        
-                    </div>
-                    <div className='total'><span className='total__legenda'>Total:</span><input className='form-control total__input' type='text' id='total' defaultValue='0,00' /></div>
-                    <div className='btn-pagar'><Button color='success' className="form-control">Pagar Agora</Button></div>
-                </Col>
-
-            </div>
-        );
-    };
+    render() {
+        if(this.state.isFechadoCaixa){
+            return (
+                <div className='fechamento__aviso'>Fechamento já realizado hoje</div>
+            );
+        } else if(this.state.pagando){
+            return (
+                <Fragment>
+                <TelaPagamento itens={this.state.itensVendidos} clientes={this.state.clientes} callbackParent={(resp) => this.pagar(resp)} />
+                </Fragment>
+            );
+        } else {
+            return (
+                <Fragment>
+                <TelaPdv produtos={this.state.produtos} callbackParent={(itensVendidos) => this.pagarAgora(itensVendidos)} />    
+                </Fragment>
+            );
+        }
+    }
 }
-    
-export default TelaPdv;

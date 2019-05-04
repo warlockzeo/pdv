@@ -1,3 +1,18 @@
+.tela-pdv {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.wrap-pedido {
+    height: 63vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
 .produto-descr {
     margin-bottom: 10px;
     text-align: left;
@@ -10,10 +25,26 @@
 }
 
 .choose-produto {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.form-produto {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
 }
 
 .choose-produto__quant {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
     position: relative;
     margin-bottom: 20px;
 }
@@ -25,13 +56,19 @@
 }
 
 .choose-produto__quant-input {
+    flex:1;
     text-align: right;
-    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
 
 .choose-produto__preco {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
     position: relative;
     margin-bottom: 20px;
 }
@@ -43,13 +80,19 @@
 }
 
 .choose-produto__preco-input {
+    flex:1;
     text-align: right;
-    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
 
 .choose-produto__preco-subtotal {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    flex:1;
     position: relative;
     margin-bottom: 20px;
 }
@@ -61,50 +104,19 @@
 }
 
 .choose-produto__preco-subtotal-input {
+    flex:1;
     text-align: right;
-    height: 90px;
     font-size: 36px;
     font-weight: bold;
 }
 
-.itens-vendidos {
-    display: inline-block;
-}
-
-.lista-itens {
-    border: 1px solid #000;
-    height: 35vh;
+.btn-pagar {
     margin-bottom: 20px;
-    border-radius: 5px;
-    margin: 0 0 20px 0;
-    padding: 10px 0;
 }
 
-.lista-itens__descr {
-    display: inline-block;
-    text-align: left;
-}
-
-.lista-itens__unit {
-    display: inline-block;
-    text-align: right;
-}
-
-.total {
-    position: relative;
-}
-
-.total__legenda {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-}
-
-.total__input {
-    height: 90px;
-    font-size: 36px;
-    color: #ff0000;
-    font-weight: bold;
-    text-align: right;
-    margin-bottom: 20px;
+.venda {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
 }
