@@ -6,6 +6,21 @@
         #imprime cupom de venda
         public function imprimeCupom()
         {
+
+            //cria espaços para ajustar a largura
+            function criaEspaco($texto, $valor, $tamanho){
+                $textoLen = strlen($texto);
+                $valorLen = $valor ? strlen($valor) : 0;
+                $tam = $tamanho ? $tamanho : 46;
+                if(($textoLen + $valorLen) <= $tam){
+                    $strEspaco = '';
+                    for($espaco=0;($textoLen + $valorLen + $espaco)<=$tam;$espaco++){
+                        $strEspaco .= ' ';
+                    }
+                }
+                return $texto.$strEspaco.$valor;
+            }
+
             $json = file_get_contents('php://input');
             $obj = json_decode($json, TRUE);
 
@@ -13,10 +28,10 @@
 
             $cabecalho = "\n";
             $cabecalho .= "------------------------------------------------\n";
-            $cabecalho .= "               DejaVu Boutique \n";
+            $cabecalho .= "               DejaVú Boutique \n";
             $cabecalho .= "------------------------------------------------\n";
             $cabecalho .= "Dayana Maria Santos 01299679471 \n";
-            $cabecalho .= "Endereco Rua Vigario Tejo, 35A \n";
+            $cabecalho .= "Endereço Rua Vigário Tejo, 35A \n";
             $cabecalho .= "Centro - Taquaritinga do Norte - PE \n";
             $cabecalho .= "Cep: 55790-000 \n";
             $cabecalho .= "CNPJ: 28.522.790/0001-94 \n";
@@ -41,6 +56,7 @@
             $itens .=     "# | Descr               | QTD | VL UN | SUBTOTAL\n";
             $itens .=     "------------------------------------------------\n";
 
+
             $itensVendidos = $obj['itensVendidos'];
 
             $i = 1;
@@ -49,44 +65,27 @@
                 $BFetch->execute();
                 $produto = $BFetch->fetch( PDO::FETCH_ASSOC );
 
-                if(strlen($produto['descr'])<=22){
-                    $strEspaco = '';
-                    for($espaco=strlen($produto['descr']);$espaco<=23;$espaco++){
-                        $strEspaco .= ' ';
-                    }
-                    $descr = $produto['descr'] . $strEspaco;
+                if(strlen($produto['descr'])<=17){
+                    $descr = criaEspaco($produto['descr'],'',17);
                 } else {
-                    $descr = substr($produto['descr'],0,23);
+                    $descr = substr($produto['descr'],0,19);
                 }
 
                 $subTotal = number_format($item['subTotal'], 2);
 
-                $itens .= "$i | $descr| $item[quant] | $item[unit] | $subTotal \n";
+                $itens .= criaEspaco($i,'',2) . "| $descr | $item[quant] | " . criaEspaco('',$item['unit'],6) . " | " . criaEspaco('',$subTotal,6) . " \n";
                 $i++;
             }
             $itens .=     "\n";
 
-            //cria espaços para ajustar a largura
-            function criaEspaco($texto,$valor){
-                $textoLen = strlen($texto);
-                $valorLen = strlen($valor);
-                if(($textoLen + $valorLen) <= 46){
-                    $strEspaco = '';
-                    for($espaco=0;($textoLen + $valorLen + $espaco)<=46;$espaco++){
-                        $strEspaco .= ' ';
-                    }
-                }
-                return $texto.$strEspaco.$valor;
-            }
-
             $rodape =  "------------------------------------------------\n";
-            $rodape .= criaespaco('Total',$venda['total'])." \n";
-            $rodape .= criaespaco('Desconto',$venda['desconto'])." \n";
-            $rodape .= criaespaco('Subtotal',$venda['totalAPagar'])." \n";
-            $rodape .= criaespaco('Forma de Pagamento',$venda['formaPg'])." \n";
-            $rodape .= criaespaco('Dinheiro',$venda['pago'])." \n";
-            $rodape .= criaespaco('Resta',$venda['resta'])." \n";
-            $rodape .= criaespaco('Troco',$venda['troco'])." \n";
+            $rodape .= criaespaco('Total',$venda['total'],'')." \n";
+            $rodape .= criaespaco('Desconto',$venda['desconto'],'')." \n";
+            $rodape .= criaespaco('Subtotal',$venda['totalAPagar'],'')." \n";
+            $rodape .= criaespaco('Forma de Pagamento',$venda['formaPg'],'')." \n";
+            $rodape .= criaespaco('Dinheiro',$venda['pago'],'')." \n";
+            $rodape .= criaespaco('Resta',$venda['resta'],'')." \n";
+            $rodape .= criaespaco('Troco',$venda['troco'],'')." \n";
             $rodape .= "------------------------------------------------\n";
             $rodape .= "\n";
             $rodape .= "\n";
@@ -95,16 +94,14 @@
 
             $rodape .= "\n".chr(27).chr(109); // finaliza a impessão e faz o corte
 
-
-            $name = utf8_encode('cupomFiscal.txt');
+            $name = 'cupomFiscal.txt';
             $text = $cabecalho . $itens . $rodape;
+            $text = mb_convert_encoding( $text, 'CP850' ); //Codepage Leste Eurpeu
             $file = fopen($name, 'w');
             fwrite($file, $text);
             fclose($file);
 
             exec('imprime.bat');
-  //          $output = shell_exec('print.bat');
-  //          echo "<pre>$output</pre>";
 
             header("Access-Control-Allow-Origin:*");
             header("Content-type: application/json");
