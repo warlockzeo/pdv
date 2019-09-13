@@ -65,20 +65,33 @@
 
             $dataVenda = date('Y/m/d');
 
-            $sql = "INSERT INTO vendas (idCliente, total, desconto, totalAPagar, pago, formaPg, resta, dataVenda, operacao) VALUES ('$idCliente', '$total', '$desconto', '$totalAPagar', '$pago', '$formaPg', '$resta', '$dataVenda', '$operacao')";
+            $sql = "SELECT * FROM vendas ORDER BY id DESC LIMIT 1";
             $BFetch=$this->conectaDB()->prepare($sql);
             $BFetch->execute();
-
-            $sql2 = "SELECT id FROM vendas ORDER BY id DESC LIMIT 1";
-            $BFetch=$this->conectaDB()->prepare($sql2);
-            $BFetch->execute();
-            $venda = $BFetch->fetch( PDO::FETCH_ASSOC );
+            $ultimaVenda = $BFetch->fetch( PDO::FETCH_ASSOC );
             $BFetch->closeCursor();
-            
-            header("Access-Control-Allow-Origin:*");
-            header("Content-type: application/json");
-  
-            echo '{"resp":"ok", "sql":"'.$sql.'", "id":"'.$venda['id'].'"}';
+
+            if($ultimaVenda['dataVenda'] == $dataVenda && $ultimaVenda['total'] == $total && $ultimaVenda['totalAPagar'] == $totalAPagar && $ultimaVenda['pago'] == $pago){
+                header("Access-Control-Allow-Origin:*");
+                header("Content-type: application/json");
+      
+                echo '{"resp":"Já tinha sido salvo"}';
+            } else {
+                $sql1 = "INSERT INTO vendas (idCliente, total, desconto, totalAPagar, pago, formaPg, resta, dataVenda, operacao) VALUES ('$idCliente', '$total', '$desconto', '$totalAPagar', '$pago', '$formaPg', '$resta', '$dataVenda', '$operacao')";
+                $BFetch=$this->conectaDB()->prepare($sql1);
+                $BFetch->execute();
+    
+                $sql2 = "SELECT id FROM vendas ORDER BY id DESC LIMIT 1";
+                $BFetch=$this->conectaDB()->prepare($sql2);
+                $BFetch->execute();
+                $venda = $BFetch->fetch( PDO::FETCH_ASSOC );
+                $BFetch->closeCursor();
+                
+                header("Access-Control-Allow-Origin:*");
+                header("Content-type: application/json");
+      
+                echo '{"resp":"ok", "sql":"'.$sql.'", "id":"'.$venda['id'].'"}';
+            }
         }
 
         public function fechamentoCaixa()

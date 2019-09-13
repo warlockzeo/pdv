@@ -13,26 +13,25 @@ Fone: 99223-1394 / 99827-6186
                 Cupom nao fiscal
 ------------------------------------------------
 
-Consumidor: Nao Identificado
-Data: 18/05/2019
+Consumidor: Mariana
+Data: 13/09/2019
 
 ------------------------------------------------
-# | Descr               | QTD | VL UN | SUBTOTAL
+# | Descri‡Æo           | QTD | VL UN | SUBTOTAL
 ------------------------------------------------
 1  | anel               | 1 |   15.93 |   15.93 
-2  | caderno universit  | 1 |    5.00 |    5.00 
-3  | Bolsa              | 1 |   59.00 |   59.00 
-4  | Peruca             | 2 |  525.00 | 1,050.00 
-5  | Pulseira           | 1 |   20.00 |   20.00 
+2  | Bolsa              | 1 |   59.00 |   59.00 
+3  | Anycolor lip gloss | 1 |    2.00 |    2.00 
+4  | Caneta             | 1 |    2.50 |    2.50 
 
 ------------------------------------------------
-Total                                   1149.93 
+Total                                     79.43 
 Desconto                                   0.00 
-Subtotal                                1149.93 
+Subtotal                                  79.43 
 Forma de Pagamento                     Dinheiro 
-Dinheiro                                   0.00 
-Resta                                   1149.93 
-Troco                                      0.00 
+Dinheiro                                  80.00 
+Resta                                      0.00 
+Troco                                      0.57 
 ------------------------------------------------
 
 

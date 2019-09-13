@@ -9,7 +9,7 @@
 
             //cria espaços para ajustar a largura
             function criaEspaco($texto, $valor, $tamanho){
-                $textoLen = strlen($texto);
+                $textoLen = mb_strlen($texto);
                 $valorLen = $valor ? strlen($valor) : 0;
                 $tam = $tamanho ? $tamanho : 46;
                 if(($textoLen + $valorLen) <= $tam){
@@ -53,7 +53,7 @@
             $cabecalho .= "\n";
 
             $itens =      "------------------------------------------------\n";
-            $itens .=     "# | Descr               | QTD | VL UN | SUBTOTAL\n";
+            $itens .=     "# | Descrição           | QTD | VL UN | SUBTOTAL\n";
             $itens .=     "------------------------------------------------\n";
 
 
@@ -65,10 +65,10 @@
                 $BFetch->execute();
                 $produto = $BFetch->fetch( PDO::FETCH_ASSOC );
 
-                if(strlen($produto['descr'])<=17){
+                if(mb_strlen($produto['descr'])<=17){
                     $descr = criaEspaco($produto['descr'],'',17);
                 } else {
-                    $descr = substr($produto['descr'],0,19);
+                    $descr = mb_substr($produto['descr'],0,18);
                 }
 
                 $subTotal = number_format($item['subTotal'], 2);
