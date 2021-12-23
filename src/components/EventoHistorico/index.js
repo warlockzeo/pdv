@@ -1,40 +1,27 @@
-import React, {Component, Fragment} from 'react';
-import DataBrasil from '../../components/DataBrasil';
-import MoedaReal from '../../components/MoedaReal';
+import React from 'react';
+import { DataBrasil, MoedaReal } from '../../utils';
 
-export default class Evento extends Component {
-
-    detalhesEvento = () => {
-        if(this.props.dados.operacao === 'Venda'){
-            this.props.mostraDetalhes(this.props.dados.id);
-        }
+const Evento = ({ dados, mostraDetalhes }) => {
+  const detalhesEvento = () => {
+    if (dados.operacao === 'Venda') {
+      mostraDetalhes(dados.id);
     }
+  };
 
-    render() {
-        const evento = this.props.dados;
+  return (
+    <tr onClick={detalhesEvento}>
+      <td>
+        <DataBrasil data={dados.dataVenda} />
+      </td>
+      <td>{dados.operacao === 'Venda' && dados.id}</td>
+      <td>{dados.operacao}</td>
+      <td className="text-right">
+        <MoedaReal
+          valor={dados.operacao === 'Venda' ? dados.valor : dados.pago * -1}
+        />
+      </td>
+    </tr>
+  );
+};
 
-        const mostra = (evento.operacao === 'Venda')?(
-                <Fragment>
-                    <tr onClick={this.detalhesEvento}>
-                        <td><DataBrasil data={evento.dataVenda} /></td>
-                        <td>{evento.id}</td>
-                        <td>{evento.operacao}</td>
-                        <td className='text-right'><MoedaReal valor={evento.valor} /></td>
-                    </tr>
-                </Fragment>
-        ):(
-                <Fragment>
-                    <tr onClick={this.detalhesEvento}>
-                        <td><DataBrasil data={evento.dataVenda} /></td>
-                        <td></td>
-                        <td>{evento.operacao}</td>
-                        <td className='text-right'><MoedaReal valor={(evento.pago)*(-1)} /></td>
-                    </tr>
-                </Fragment>
-        );
-
-        return <Fragment>{mostra}</Fragment>
-
-    };
-
-}
+export default Evento;

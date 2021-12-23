@@ -1,58 +1,42 @@
-import React, { Component, Fragment } from 'react';
-import moment from 'moment';
+import React, { useState, useEffect } from 'react';
 import TelaPdv from '../../components/TelaPdv';
 import TelaPagamento from '../../components/TelaPagamento';
 
+import { hoje, amanha } from '../../constants';
+
 import './styles.css';
 
-export default class Pdv extends Component {
-  constructor(props) {
-    super(props);
+const Pdv = () => {
+  const [produtos, setProdutos] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [pagando, setPagando] = useState(false);
+  const [isFechadoCaixa, setIsFechadoCaixa] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [itensVendidos, setItensVendidos] = useState([]);
 
-    this.state = {
-      produtos: [],
-      clientes: [],
-      pagando: false,
-      vendaId: 0,
-      isFechadoCaixa: false,
-      isWaiting: false
-    };
-  }
-
-  //carrega informações dos produtos no state
-  carregaProdutos() {
+  const carregaProdutos = () => {
     fetch('http://pdv/exibir/produtos/')
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          produtos: responseJson
-        });
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setProdutos(responseJson);
       });
-  }
-
-  //carrega informações dos clientes no state
-  carregaClientes() {
-    fetch('http://pdv/exibir/clientes/')
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          clientes: responseJson
-        });
-      });
-  }
-
-  //função do callback para o botão pagar agora no componente telaPdv
-  pagarAgora = itensVendidos => {
-    this.setState({
-      pagando: true,
-      itensVendidos: itensVendidos
-    });
   };
 
-  //recebe os dados de pagamento e da venda e envia para pi para gravar no banco de dados
-  pagar = async resp => {
-    this.setState({ isWaiting: true });
-    //1º gravar dados da venda(valor,id do cliente, total pago, etc)
+  const carregaClientes = () => {
+    fetch('http://pdv/exibir/clientes/')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setClientes(responseJson);
+      });
+  };
+
+  const pagarAgora = (itensVendidos) => {
+    setPagando(true);
+    setItensVendidos(itensVendidos);
+  };
+
+  const pagar = async (resp) => {
+    setIsWaiting(true);
     const resta =
       resp.venda.resta > 0
         ? parseFloat(resp.venda.resta)
@@ -87,15 +71,13 @@ export default class Pdv extends Component {
         operacao: 'Venda'
       })
     })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson.resp === 'ok') {
-          this.setState({ vendaId: responseJson.id });
-          console.log(responseJson);
-        }
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // if (responseJson.resp === 'ok') {
+        //   setVendaId(responseJson.id);
+        // }
 
-        resp.itensVendidos.forEach(item => {
-          //2º grava itens vendidos
+        resp.itensVendidos.forEach((item) => {
           fetch(`http://pdv/gravarItensVendidos/`, {
             method: 'POST',
             body: JSON.stringify({
@@ -110,16 +92,15 @@ export default class Pdv extends Component {
                 .replace(',', '.')
             })
           })
-            .then(response => response.json())
-            .then(responseJson => {
+            .then((response) => response.json())
+            .then((responseJson) => {
               if (responseJson.resp === 'ok') {
                 //console.log(responseJson)
               }
             });
         });
-      }); //fim do 1º passo
+      });
 
-    //3º atualiza saldo do cliente
     if (resp.venda.resta)
       fetch(`http://pdv/atualizaSaldo/`, {
         method: 'POST',
@@ -130,16 +111,14 @@ export default class Pdv extends Component {
             .replace(',', '.')
         })
       })
-        .then(response => response.json())
-        .then(responseJson => {
+        .then((response) => response.json())
+        .then((responseJson) => {
           if (responseJson.resp === 'ok') {
             //console.log(responseJson.sql)
           }
         });
 
-    //4º atualizar estoques
-    resp.itensVendidos.forEach(item => {
-      //atualiza estoques
+    resp.itensVendidos.forEach((item) => {
       fetch(`http://pdv/diminuiEstoque/`, {
         method: 'POST',
         body: JSON.stringify({
@@ -147,15 +126,14 @@ export default class Pdv extends Component {
           estoque: item.quant
         })
       })
-        .then(response => response.json())
-        .then(responseJson => {
+        .then((response) => response.json())
+        .then((responseJson) => {
           if (responseJson.resp === 'ok') {
             //console.log(responseJson)
           }
         });
-    }); //fim do map()
+    });
 
-    //5º imprimir cupom
     fetch(`http://pdv/imprimeCupom/`, {
       method: 'POST',
       body: JSON.stringify({
@@ -180,23 +158,18 @@ export default class Pdv extends Component {
         itensVendidos: resp.itensVendidos
       })
     })
-      .then(response => response.json())
-      .then(responseJson => {
+      .then((response) => response.json())
+      .then((responseJson) => {
         if (responseJson.resp === 'ok') {
-          this.setState({ isWaiting: false });
+          setIsWaiting(false);
           window.location.href = '/';
         }
-      }); //fim do 5º passo
+      });
   };
 
-  componentDidMount() {
-    this.carregaProdutos();
-    this.carregaClientes();
-
-    const hoje = moment().format('YYYY-MM-DD');
-    const amanha = moment()
-      .add(1, 'days')
-      .format('YYYY-MM-DD');
+  useEffect(() => {
+    carregaProdutos();
+    carregaClientes();
 
     fetch('http://pdv/exibir/vendas/', {
       method: 'POST',
@@ -205,50 +178,48 @@ export default class Pdv extends Component {
         dataf: amanha
       })
     })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          vendas: responseJson.filter(venda => venda.dataVenda === hoje)
-        });
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //setVendas(responseJson.filter((venda) => venda.dataVenda === hoje));
 
         const fechado = responseJson.filter(
-          venda =>
+          (venda) =>
             venda.operacao === 'Fechamento de caixa' &&
             venda.dataVenda === amanha
         );
 
-        fechado.length && this.setState({ isFechadoCaixa: true });
+        fechado.length && setIsFechadoCaixa(true);
       });
-  }
+  }, []);
 
-  render() {
-    if (this.state.isFechadoCaixa) {
-      return (
-        <div className='fechamento__aviso'>Fechamento já realizado hoje</div>
-      );
-    } else if (this.state.isWaiting) {
-      return (
-        <div className='fechamento__aviso'>Aguarde, realizando pagamento!</div>
-      );
-    } else if (this.state.pagando) {
-      return (
-        <Fragment>
-          <TelaPagamento
-            itens={this.state.itensVendidos}
-            clientes={this.state.clientes}
-            callbackParent={resp => this.pagar(resp)}
-          />
-        </Fragment>
-      );
-    } else {
-      return (
-        <Fragment>
-          <TelaPdv
-            produtos={this.state.produtos}
-            callbackParent={itensVendidos => this.pagarAgora(itensVendidos)}
-          />
-        </Fragment>
-      );
-    }
+  if (isFechadoCaixa) {
+    return (
+      <div className="fechamento__aviso">Fechamento já realizado hoje</div>
+    );
+  } else if (isWaiting) {
+    return (
+      <div className="fechamento__aviso">Aguarde, realizando pagamento!</div>
+    );
+  } else if (pagando) {
+    return (
+      <>
+        <TelaPagamento
+          itens={itensVendidos}
+          clientes={clientes}
+          callbackParent={(resp) => pagar(resp)}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <TelaPdv
+          produtos={produtos}
+          callbackParent={(itensVendidos) => pagarAgora(itensVendidos)}
+        />
+      </>
+    );
   }
-}
+};
+
+export default Pdv;

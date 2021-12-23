@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './styles.css';
 
@@ -25,7 +25,6 @@ class Autocomplete extends Component {
       // What the user has entered
       userInput: ''
     };
-    
   }
 
   _input: ?HTMLInputElement;
@@ -35,13 +34,13 @@ class Autocomplete extends Component {
   }
 
   // Event fired when the input value is changed
-  onChange = async e => {
+  onChange = async (e) => {
     const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
 
     // Filter our suggestions that don't contain the user's input
     const filteredSuggestions = suggestions.filter(
-      suggestion =>
+      (suggestion) =>
         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
 
@@ -56,7 +55,7 @@ class Autocomplete extends Component {
   };
 
   // Event fired when the user clicks on a suggestion
-  onClick = async e => {
+  onClick = async (e) => {
     // Update the user input and reset the rest of the state
     await this.setState({
       //activeSuggestion: 0,
@@ -68,7 +67,7 @@ class Autocomplete extends Component {
   };
 
   // Event fired when the user mouse over a suggestion item
-  onMouseOver = async e => {
+  onMouseOver = async (e) => {
     // Update the user input and reset the rest of the state
     await this.setState({
       //activeSuggestion: 0,
@@ -77,13 +76,13 @@ class Autocomplete extends Component {
   };
 
   // Event fired when the user presses a key down
-  onKeyDown = async e => {
+  onKeyDown = async (e) => {
     const { activeSuggestion, filteredSuggestions } = this.state;
 
     // User pressed the enter key, update the input and close the
     // suggestions
     if (e.keyCode === 13) {
-      if(e.currentTarget.value){
+      if (e.currentTarget.value) {
         await this.setState({
           //activeSuggestion: 0,
           showSuggestions: false,
@@ -111,7 +110,7 @@ class Autocomplete extends Component {
   };
 
   // Event fired when the user clicks in the input field
-  onFocus = async e => {
+  onFocus = async (e) => {
     // Update the user input and reset the rest of the state
     await this.setState({
       //activeSuggestion: 0,
@@ -120,23 +119,22 @@ class Autocomplete extends Component {
       userInput: ''
     });
   };
-  
+
   // Event fired when the user get out from input field
-  onBlur = async e => {
+  onBlur = async (e) => {
     // Update the user input and reset the rest of the state
     await this.setState({
-      showSuggestions: false,
+      showSuggestions: false
     });
     this.props.callbackParent(this.state.userInput);
   };
-
 
   render() {
     const {
       onChange,
       onClick,
       onMouseOver,
-      onFocus, 
+      onFocus,
       onBlur,
       onKeyDown,
       state: {
@@ -158,7 +156,7 @@ class Autocomplete extends Component {
 
               // Flag the active suggestion with a class
               if (index === activeSuggestion) {
-                className = "suggestion-active";
+                className = 'suggestion-active';
               }
 
               return (
@@ -166,8 +164,7 @@ class Autocomplete extends Component {
                   className={`suggestions__item ${className} `}
                   key={suggestion}
                   onClick={onClick}
-                  onMouseOver={onMouseOver}
-                >
+                  onMouseOver={onMouseOver}>
                   {suggestion}
                 </li>
               );
@@ -184,17 +181,19 @@ class Autocomplete extends Component {
     }
 
     return (
-      <div className={`autocomplete-block ${this.state.focused ? "focused": ""}`}>
-        <input className="input-autocomplete form-control"
+      <div
+        className={`autocomplete-block ${this.state.focused ? 'focused' : ''}`}>
+        <input
+          className="input-autocomplete form-control"
           type="text"
           onChange={onChange}
           onKeyDown={onKeyDown}
           onBlur={onBlur}
           onFocus={onFocus}
           value={userInput}
-          placeholder={this.props.texto?this.props.texto : ''}
+          placeholder={this.props.texto ? this.props.texto : ''}
           autoFocus
-          ref={c => (this._input = c)}
+          ref={(c) => (this._input = c)}
         />
         {suggestionsListComponent}
       </div>

@@ -1,122 +1,126 @@
 .tela-pdv {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
-}
-
-.wrap-pedido {
-    height: 63vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
+  padding-top: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
 .produto-descr {
-    margin-bottom: 10px;
-    text-align: left;
+  padding: 20px 15px;
 }
 
 .produto-descr input {
-    height: 70px;
-    font-size: 36px;
-    font-weight: bold;
+  min-height: 70px;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.wrap-pedido {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.itens-vendidos {
+  display: flex;
+  flex-direction: column;
 }
 
 .choose-produto {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .form-produto {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
 .choose-produto__quant {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 
-    flex:1;
-    position: relative;
-    margin-bottom: 20px;
+  flex: 1;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .choose-produto__quant-legenda {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 }
 
 .choose-produto__quant-input {
-    flex:1;
-    text-align: right;
-    font-size: 36px;
-    font-weight: bold;
+  flex: 1;
+  text-align: right;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .choose-produto__preco {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 
-    flex:1;
-    position: relative;
-    margin-bottom: 20px;
+  flex: 1;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .choose-produto__preco-legenda {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 }
 
 .choose-produto__preco-input {
-    flex:1;
-    text-align: right;
-    font-size: 36px;
-    font-weight: bold;
+  flex: 1;
+  text-align: right;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .choose-produto__preco-subtotal {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 
-    flex:1;
-    position: relative;
-    margin-bottom: 20px;
+  flex: 1;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .choose-produto__preco-subtotal-legenda {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 }
 
 .choose-produto__preco-subtotal-input {
-    flex:1;
-    text-align: right;
-    font-size: 36px;
-    font-weight: bold;
+  flex: 1;
+  text-align: right;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .btn-pagar {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .venda {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
 }

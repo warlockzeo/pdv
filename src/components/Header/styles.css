@@ -1,41 +1,36 @@
 .nav-link {
-    color: #ff00f7 !important;
+  color: #ff00f7 !important;
 }
 
 .nav-link:hover {
-    color: #fff !important;
-    cursor: pointer;
+  color: #fff !important;
+  cursor: pointer;
 }
 
 .nav-link:active {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .dropdown-item:hover {
-    background-color: #ff00f7 !important;
-    color: #ffffff !important;
+  background-color: #ff00f7 !important;
+  color: #ffffff !important;
 }
 
 .bg-dark {
-    background-color: #000 !important;
+  background-color: #000 !important;
 }
 
 .logo-header {
-    width: 200px;
-    height: auto;
+  width: auto;
+  height: 40px;
 }
 
 @media only screen and (max-width: 767px) {
-	.logo-header {
-		width: 180px;
-    }
+  .navbar-brand {
+    width: 50%;
+  }
 
-    .navbar-brand {
-        width: 50%;
-    }
-    
-    .navbar-dark .navbar-toggler {
-        border-color: #ff00f7;
-    }
+  .navbar-dark .navbar-toggler {
+    border-color: #ff00f7;
+  }
 }
-

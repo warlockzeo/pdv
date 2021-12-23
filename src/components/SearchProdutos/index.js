@@ -1,44 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '../Autocomplete';
 
-class SearchProdutos extends Component {
-    state = {
-        produtos: []
-    };
+const SearchProdutos = (props) => {
+  const [produtos, setProdutos] = useState([]);
 
-    componentDidMount() {
-        this.loadProducts();
-    }
+  const loadProducts = async () => {
+    // const response = await Api.get(`/produtos`);
+    // setProdutos(response.data);
 
-    loadProducts = async () => {
-        /*const response = await Api.get(`/produtos`);
+    setProdutos([
+      'Alligator',
+      'Bask',
+      'Crocodilian',
+      'Death Roll',
+      'Eggs',
+      'Jaws',
+      'Reptile',
+      'Solitary',
+      'Tail',
+      'Wetlands'
+    ]);
+  };
 
-        this.setState({produtos : response.data});*/
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
-        this.setState({ produtos : [
-            "Alligator",
-            "Bask",
-            "Crocodilian",
-            "Death Roll",
-            "Eggs",
-            "Jaws",
-            "Reptile",
-            "Solitary",
-            "Tail",
-            "Wetlands"
-          ]
-        });
-    };
-
-  render() {
-    return (
-      <div>
-      <Autocomplete
-        suggestions={this.state.produtos}
-      />
-    </div>
-    );
-  }
-}
+  return (
+    <>
+      <Autocomplete suggestions={produtos} />
+    </>
+  );
+};
 
 export default SearchProdutos;
