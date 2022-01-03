@@ -36,7 +36,7 @@ const FechamentoCaixa = () => {
   };
 
   useEffect(() => {
-    fetch('http://pdv/exibir/vendas/', {
+    fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/vendas/`, {
       method: 'POST',
       body: JSON.stringify({
         datai: hoje,

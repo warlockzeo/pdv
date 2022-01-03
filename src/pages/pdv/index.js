@@ -21,7 +21,7 @@ const Pdv = () => {
   };
 
   const carregaProdutos = async () => {
-    await fetch('http://pdv/exibir/produtos/')
+    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/produtos/`)
       .then((response) => response.json())
       .then((responseJson) => {
         setProdutos(responseJson);
@@ -29,7 +29,7 @@ const Pdv = () => {
   };
 
   const carregaClientes = async () => {
-    await fetch('http://pdv/exibir/clientes/')
+    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/clientes/`)
       .then((response) => response.json())
       .then((responseJson) => {
         setClientes(responseJson);
@@ -145,7 +145,7 @@ const Pdv = () => {
     carregaProdutos();
     carregaClientes();
 
-    await fetch('http://pdv/exibir/vendas/', {
+    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/vendas/`, {
       method: 'POST',
       body: JSON.stringify({
         datai: hoje,

@@ -1,35 +1,34 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import RelatorioDevedores from '../../components/RelatorioDevedores';
 
 import './styles.css';
 
 export default class TelaRelatorioDevedores extends Component {
-    state = {
-        devedores:[],
-        datai:'',
-        dataf:''
-    };
+  state = {
+    devedores: [],
+    datai: '',
+    dataf: ''
+  };
 
-    carregaDevedores(){
-        fetch("http://pdv/devedores")
-        .then((response)=>response.json())
-        .then((responseJson)=>
-        {
-            this.setState({
-                devedores:responseJson
-            });
-        })
-    }
+  carregaDevedores() {
+    fetch(`${process.env.REACT_APP_URLBASEAPI}devedores`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          devedores: responseJson
+        });
+      });
+  }
 
-    componentDidMount(){  
-        this.carregaDevedores();
-    }
+  componentDidMount() {
+    this.carregaDevedores();
+  }
 
-    render() {
-        return (
-            <Fragment>
-                <RelatorioDevedores dados={this.state.devedores}/>
-            </Fragment>
-        );
-    }
+  render() {
+    return (
+      <Fragment>
+        <RelatorioDevedores dados={this.state.devedores} />
+      </Fragment>
+    );
+  }
 }

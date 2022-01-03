@@ -12,7 +12,7 @@ const Login = () => {
   const fetchLogin = async (actualLogin, actualPassword) => {
     let resp;
 
-    await fetch('http://pdv/fazerlogin', {
+    await fetch(`${process.env.REACT_APP_URLBASEAPI}fazerlogin`, {
       method: 'POST',
       body: JSON.stringify({
         login: actualLogin,
