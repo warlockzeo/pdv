@@ -24,6 +24,8 @@
 	RewriteRule ^atualizaSaldo/?$ /api/index.php?opcao=atualizaSaldo&tabela=clientes [NC]
 
 	RewriteRule ^devedores/?$ /api/index.php?opcao=devedores&tabela=clientes [NC]
+	
+	RewriteRule ^fazerlogin/?$ /api/index.php?opcao=fazerLogin&tabela=users [NC]
 
 	RewriteRule ^exibir/([a-z0-9-]+)/?$ /api/index.php?opcao=exibir&tabela=$1 [NC]
 	RewriteRule ^gravar/([a-z0-9-]+)/?$ /api/index.php?opcao=gravar&tabela=$1 [NC]

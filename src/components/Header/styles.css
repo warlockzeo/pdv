@@ -1,3 +1,6 @@
+.navbar {
+  background-color: #000 !important;
+}
 .nav-link {
   color: #ff00f7 !important;
 }
@@ -14,10 +17,6 @@
 .dropdown-item:hover {
   background-color: #ff00f7 !important;
   color: #ffffff !important;
-}
-
-.bg-dark {
-  background-color: #000 !important;
 }
 
 .logo-header {

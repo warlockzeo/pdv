@@ -14,16 +14,22 @@ const Pdv = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [itensVendidos, setItensVendidos] = useState([]);
 
-  const carregaProdutos = () => {
-    fetch('http://pdv/exibir/produtos/')
+  const toBRL = (val) => {
+    return parseFloat(val)
+      .toFixed(2)
+      .replace(',', '.');
+  };
+
+  const carregaProdutos = async () => {
+    await fetch('http://pdv/exibir/produtos/')
       .then((response) => response.json())
       .then((responseJson) => {
         setProdutos(responseJson);
       });
   };
 
-  const carregaClientes = () => {
-    fetch('http://pdv/exibir/clientes/')
+  const carregaClientes = async () => {
+    await fetch('http://pdv/exibir/clientes/')
       .then((response) => response.json())
       .then((responseJson) => {
         setClientes(responseJson);
@@ -37,35 +43,17 @@ const Pdv = () => {
 
   const pagar = async (resp) => {
     setIsWaiting(true);
-    const resta =
-      resp.venda.resta > 0
-        ? parseFloat(resp.venda.resta)
-            .toFixed(2)
-            .replace(',', '.')
-        : '0.00';
-    const troco =
-      resp.venda.resta < 0
-        ? parseFloat(resp.venda.resta * -1)
-            .toFixed(2)
-            .replace(',', '.')
-        : '0.00';
+    const resta = resp.venda.resta > 0 ? toBRL(resp.venda.resta) : '0.00';
+    const troco = resp.venda.resta < 0 ? toBRL(resp.venda.resta * -1) : '0.00';
 
     await fetch(`http://pdv/gravar/vendas/`, {
       method: 'POST',
       body: JSON.stringify({
         cliente: resp.venda.cliente,
-        total: parseFloat(resp.venda.total)
-          .toFixed(2)
-          .replace(',', '.'),
-        desconto: parseFloat(resp.venda.desconto)
-          .toFixed(2)
-          .replace(',', '.'),
-        totalAPagar: parseFloat(resp.venda.totalAPagar)
-          .toFixed(2)
-          .replace(',', '.'),
-        pago: parseFloat(resp.venda.pago)
-          .toFixed(2)
-          .replace(',', '.'),
+        total: toBRL(resp.venda.total),
+        desconto: toBRL(resp.venda.desconto),
+        totalAPagar: toBRL(resp.venda.totalAPagar),
+        pago: toBRL(resp.venda.pago),
         formaPg: resp.venda.formaPg,
         resta: resta,
         operacao: 'Venda'
@@ -84,12 +72,8 @@ const Pdv = () => {
               idVenda: responseJson.id,
               idProduto: item.id,
               quant: item.quant,
-              unit: parseFloat(item.unit)
-                .toFixed(2)
-                .replace(',', '.'),
-              subTotal: parseFloat(item.subTotal)
-                .toFixed(2)
-                .replace(',', '.')
+              unit: toBRL(item.unit),
+              subTotal: toBRL(item.subTotal)
             })
           })
             .then((response) => response.json())
@@ -106,9 +90,7 @@ const Pdv = () => {
         method: 'POST',
         body: JSON.stringify({
           id: resp.venda.cliente,
-          saldo: parseFloat(resp.venda.resta)
-            .toFixed(2)
-            .replace(',', '.')
+          saldo: toBRL(resp.venda.resta)
         })
       })
         .then((response) => response.json())
@@ -139,18 +121,10 @@ const Pdv = () => {
       body: JSON.stringify({
         venda: {
           cliente: resp.venda.cliente,
-          total: parseFloat(resp.venda.total)
-            .toFixed(2)
-            .replace(',', '.'),
-          desconto: parseFloat(resp.venda.desconto)
-            .toFixed(2)
-            .replace(',', '.'),
-          totalAPagar: parseFloat(resp.venda.totalAPagar)
-            .toFixed(2)
-            .replace(',', '.'),
-          pago: parseFloat(resp.venda.pago)
-            .toFixed(2)
-            .replace(',', '.'),
+          total: toBRL(resp.venda.total),
+          desconto: toBRL(resp.venda.desconto),
+          totalAPagar: toBRL(resp.venda.totalAPagar),
+          pago: toBRL(resp.venda.pago),
           formaPg: resp.venda.formaPg,
           resta: resta,
           troco: troco
@@ -167,11 +141,11 @@ const Pdv = () => {
       });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     carregaProdutos();
     carregaClientes();
 
-    fetch('http://pdv/exibir/vendas/', {
+    await fetch('http://pdv/exibir/vendas/', {
       method: 'POST',
       body: JSON.stringify({
         datai: hoje,
@@ -192,34 +166,26 @@ const Pdv = () => {
       });
   }, []);
 
-  if (isFechadoCaixa) {
-    return (
-      <div className="fechamento__aviso">Fechamento já realizado hoje</div>
-    );
-  } else if (isWaiting) {
-    return (
-      <div className="fechamento__aviso">Aguarde, realizando pagamento!</div>
-    );
-  } else if (pagando) {
-    return (
-      <>
+  return (
+    <>
+      {isFechadoCaixa ? (
+        <div className="fechamento__aviso">Fechamento já realizado hoje</div>
+      ) : isWaiting ? (
+        <div className="fechamento__aviso">Aguarde, realizando pagamento!</div>
+      ) : pagando ? (
         <TelaPagamento
           itens={itensVendidos}
           clientes={clientes}
           callbackParent={(resp) => pagar(resp)}
         />
-      </>
-    );
-  } else {
-    return (
-      <>
+      ) : (
         <TelaPdv
           produtos={produtos}
           callbackParent={(itensVendidos) => pagarAgora(itensVendidos)}
         />
-      </>
-    );
-  }
+      )}
+    </>
+  );
 };
 
 export default Pdv;
