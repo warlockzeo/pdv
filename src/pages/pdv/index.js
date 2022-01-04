@@ -20,22 +20,6 @@ const Pdv = () => {
       .replace(',', '.');
   };
 
-  const carregaProdutos = async () => {
-    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/produtos/`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setProdutos(responseJson);
-      });
-  };
-
-  const carregaClientes = async () => {
-    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/clientes/`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setClientes(responseJson);
-      });
-  };
-
   const pagarAgora = (itensVendidos) => {
     setPagando(true);
     setItensVendidos(itensVendidos);
@@ -141,11 +125,27 @@ const Pdv = () => {
       });
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+    const carregaProdutos = async () => {
+      await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/produtos/`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setProdutos(responseJson);
+        });
+    };
+
+    const carregaClientes = async () => {
+      await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/clientes/`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setClientes(responseJson);
+        });
+    };
+
     carregaProdutos();
     carregaClientes();
 
-    await fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/vendas/`, {
+    fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/vendas/`, {
       method: 'POST',
       body: JSON.stringify({
         datai: hoje,

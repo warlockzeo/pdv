@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { Login as S } from './styles';
 
 const Login = () => {
@@ -8,6 +10,8 @@ const Login = () => {
   const [logged, setLogged] = useState(false);
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState('');
+
+  const isLogged = useSelector((state) => state?.pdv?.logged);
 
   const fetchLogin = async (actualLogin, actualPassword) => {
     let resp;

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from './redux';
+
 import { BrowserRouter } from 'react-router-dom';
-//import { useDispatch } from 'react-redux';
 
 import Theme from './Theme';
 import MyRoutes from './routes';
@@ -10,14 +12,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
-    <div className="app">
-      <Theme>
-        <BrowserRouter>
-          <Header />
-          <MyRoutes />
-        </BrowserRouter>
-      </Theme>
-    </div>
+    <Provider store={store}>
+      <div className="app">
+        <Theme>
+          <BrowserRouter>
+            <Header />
+            <MyRoutes />
+          </BrowserRouter>
+        </Theme>
+      </div>
+    </Provider>
   );
 };
 
