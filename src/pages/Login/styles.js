@@ -17,10 +17,15 @@ export const Login = {
     margin-bottom: 10px;
     text-align: center;
   `,
+  image: styled.img`
+    max-width: 200px;
+    margin-bottom: 20px;
+  `,
   button: styled.button`
     width: 80%;
     max-width: 300px;
     height: 50px;
+    margin-top: 20px;
     margin-bottom: 10px;
     text-align: center;
   `,

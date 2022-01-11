@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { loginPDV } from '../../redux/actions/pdv';
 
 import { Login as S } from './styles';
 
@@ -11,7 +12,7 @@ const Login = () => {
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState('');
 
-  const isLogged = useSelector((state) => state?.pdv?.logged);
+  const dispatch = useDispatch();
 
   const fetchLogin = async (actualLogin, actualPassword) => {
     let resp;
@@ -32,14 +33,15 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    setLogging(true);
     if (login && password) {
+      setLogging(true);
       setError('');
       const respFetch = await fetchLogin(login, password);
 
       if (respFetch === 'ok') {
-        sessionStorage.setItem('login', JSON.stringify(true));
         setLogged(true);
+        dispatch(loginPDV());
+        sessionStorage.setItem('login', JSON.stringify(true));
       } else {
         setError('Usuário ou senha inválidos');
       }
@@ -53,18 +55,21 @@ const Login = () => {
     setLogin('');
     setPassword('');
     setLogged(false);
-    sessionStorage.removeItem('login');
   }, []);
 
   return (
     <S.wrap>
+      <S.image
+        className="main-logo"
+        src="/assets/images/logo.jpg"
+        alt="DéjàVu Boutique"
+      />
       {logged ? (
         <Navigate to="/" />
       ) : logging ? (
         <div>Logando...</div>
       ) : (
         <>
-          {error && <S.error>{error}</S.error>}
           <S.input
             type="text"
             placeholder="Login"
@@ -75,6 +80,9 @@ const Login = () => {
             placeholder="Password"
             onChange={(e) => setPassword(e.currentTarget.value)}
           />
+
+          {error && <S.error>{error}</S.error>}
+
           <S.button
             className="btn btn-success form-control"
             onClick={handleLogin}>
