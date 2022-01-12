@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutPDV } from '../../redux/actions/pdv';
@@ -18,13 +18,26 @@ import './styles.css';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const dispatch = useDispatch();
 
   const logout = () => {
     dispatch(logoutPDV());
     sessionStorage.removeItem('login');
   };
+
+  const onClickLink = (e) => {
+    setIsOpen(false);
+    document.querySelectorAll('a').forEach((el) => {
+      el.classList.remove('nav-link__active');
+    });
+    e.currentTarget.classList.add('nav-link__active');
+  };
+
+  useEffect(() => {
+    document.querySelectorAll('a').forEach((el) => {
+      el.addEventListener('click', onClickLink);
+    });
+  }, []);
 
   return (
     <Navbar expand='md' fixed='top' dark>
@@ -40,7 +53,7 @@ const Header = () => {
       <Collapse isOpen={isOpen} navbar>
         <Nav className='ml-auto' navbar>
           <NavItem>
-            <Link to='/clientes/' className='nav-link'>
+            <Link to='/clientes/' className={`nav-link`}>
               Clientes
             </Link>
           </NavItem>

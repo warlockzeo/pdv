@@ -1,6 +1,7 @@
 .navbar {
   background-color: #000 !important;
 }
+
 .nav-link {
   color: #ff00f7 !important;
 }
@@ -10,7 +11,7 @@
   cursor: pointer;
 }
 
-.nav-link:active {
+.nav-link__active {
   color: #fff !important;
 }
 
