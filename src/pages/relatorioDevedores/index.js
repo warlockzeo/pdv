@@ -1,34 +1,24 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import RelatorioDevedores from '../../components/RelatorioDevedores';
 
 import './styles.css';
 
-export default class TelaRelatorioDevedores extends Component {
-  state = {
-    devedores: [],
-    datai: '',
-    dataf: ''
-  };
+const TelaRelatorioDevedores = () => {
+  const [devedores, setDevedores] = useState([]);
 
-  carregaDevedores() {
+  const carregaDevedores = () => {
     fetch(`${process.env.REACT_APP_URLBASEAPI}devedores`)
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({
-          devedores: responseJson
-        });
+        setDevedores(responseJson);
       });
-  }
+  };
 
-  componentDidMount() {
-    this.carregaDevedores();
-  }
+  useEffect(() => {
+    carregaDevedores();
+  }, []);
 
-  render() {
-    return (
-      <Fragment>
-        <RelatorioDevedores dados={this.state.devedores} />
-      </Fragment>
-    );
-  }
-}
+  return <RelatorioDevedores dados={devedores} />;
+};
+
+export default TelaRelatorioDevedores;

@@ -14,30 +14,19 @@ export default class RelatoriosProdutos extends Component {
     ));
     return (
       <Fragment>
-        <table className="table table-sm table-hover">
-          <thead className="relat__head-tabela thead-dark">
-            <tr
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'stretch'
-              }}>
-              <th style={{ flex: '0 1 15%' }}>Data</th>
-              <th style={{ flex: '0 1 40%' }} className="text-left">
-                Produto
-              </th>
-              <th style={{ flex: '0 1 15%' }}>Quant</th>
-              <th style={{ flex: '0 1 15%' }} className="text-right">
-                Valor Unit
-              </th>
-              <th style={{ flex: '0 1 15%' }} className="text-right">
-                Subtotal
-              </th>
+        <table className='table table-sm table-hover'>
+          <thead className='thead-dark'>
+            <tr>
+              <th>Data</th>
+              <th className='text-left'>Produto</th>
+              <th>Quant</th>
+              <th className='text-right'>Valor Unit</th>
+              <th className='text-right'>Subtotal</th>
             </tr>
           </thead>
-          <tbody className="relat__scroll-tabela">{mostra}</tbody>
+          <tbody>{mostra}</tbody>
         </table>
-        <div className="relat__total">
+        <div className='relat__total'>
           <MoedaReal valor={total} />
         </div>
       </Fragment>

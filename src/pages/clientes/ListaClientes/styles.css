@@ -1,0 +1,26 @@
+.tela-clientes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  display: flex;
+}
+
+thead {
+  top: 114px;
+  position: sticky;
+}
+
+td,
+th {
+  padding-left: 10px !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+td:last-child {
+  justify-content: flex-end;
+}

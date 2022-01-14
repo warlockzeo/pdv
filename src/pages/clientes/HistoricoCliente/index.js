@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Col, Button } from 'reactstrap';
-import { DataBrasil, MoedaReal } from '../../utils';
-import Evento from '../EventoHistorico';
+import { DataBrasil, MoedaReal } from '../../../utils';
+import Evento from '../../../components/EventoHistorico';
 
 import './styles.css';
 
@@ -43,10 +43,10 @@ class HistoricoCliente extends Component {
           <tr>
             <td>{item.produto}</td>
             <td>{item.quant}</td>
-            <td className="text-right">
+            <td className='text-right'>
               <MoedaReal valor={item.unit} />
             </td>
-            <td className="text-right">
+            <td className='text-right'>
               <MoedaReal valor={item.subTotal} />
             </td>
           </tr>
@@ -58,9 +58,9 @@ class HistoricoCliente extends Component {
       </tr>
     );
     const historico = this.props.historico.length ? (
-      <Col md={6} className="cliente-historico">
-        <table className="table table-sm table-hover">
-          <thead className="thead-dark">
+      <Col md={6} className='cliente-historico'>
+        <table className='table table-sm table-hover'>
+          <thead className='thead-dark'>
             <tr>
               <th>Data</th>
               <th>Número da Venda</th>
@@ -85,20 +85,20 @@ class HistoricoCliente extends Component {
         </table>
       </Col>
     ) : (
-      <Col md={6} className="cliente-historico">
+      <Col md={6} className='cliente-historico'>
         <h1>Nenhuma operação realizada por este cliente</h1>
       </Col>
     );
 
     const detalhesEvento = this.state.eventoAtual.length ? (
-      <Col md={6} className="detalhes-evento">
+      <Col md={6} className='detalhes-evento'>
         <Button
-          color="danger"
+          color='danger'
           onClick={this.fechaDetalhesEvento}
-          className="form-control">
+          className='form-control'>
           Fecha detalhes
         </Button>
-        <div className="container">
+        <div className='container'>
           Venda número: {this.state.eventoAtual[0].id}
           <br />
           Data: <DataBrasil data={this.state.eventoAtual[0].dataVenda} />
@@ -117,7 +117,7 @@ class HistoricoCliente extends Component {
           Crediário: <MoedaReal valor={this.state.eventoAtual[0].resta} />
           <br />
           <h2>Ítens da venda</h2>
-          <table className="table table-sm table-hover">
+          <table className='table table-sm table-hover'>
             <tbody>{itens}</tbody>
           </table>
         </div>
@@ -129,15 +129,15 @@ class HistoricoCliente extends Component {
     const mostra = this.state.isDetalhesOpen ? detalhesEvento : historico;
 
     return (
-      <div className="wrap-historicoCliente">
-        <Col md={6} className="cliente-detalhes">
+      <div className='wrap-historicoCliente'>
+        <Col md={6} className='cliente-detalhes'>
           <Button
-            color="success"
+            color='success'
             onClick={this.voltar}
-            className="form-control">
+            className='form-control'>
             Voltar
           </Button>
-          <div className="container">
+          <div className='container'>
             Nome: {this.props.cliente.nome}
             <br />
             Endereço: {this.props.cliente.endereco}

@@ -71,7 +71,7 @@ class TelaProdutos extends Component {
 
   render() {
     return (
-      <div className="tela-produtos col-md-12">
+      <div className='tela-produtos'>
         <ListaProdutos
           dados={this.state.produtos}
           gravar={this.gravar}

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Button, Col } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { hoje } from '../../constants';
+
+import { RelatorioBarra as S } from './styles';
 
 export default class RelatorioBarra extends Component {
   state = {
@@ -33,12 +35,8 @@ export default class RelatorioBarra extends Component {
   };
 
   semanal = () => {
-    const domingo = moment()
-      .startOf('week')
-      .format('YYYY-MM-DD');
-    const sabado = moment()
-      .endOf('week')
-      .format('YYYY-MM-DD');
+    const domingo = moment().startOf('week').format('YYYY-MM-DD');
+    const sabado = moment().endOf('week').format('YYYY-MM-DD');
     this.setState({
       datai: domingo,
       dataf: sabado
@@ -50,9 +48,7 @@ export default class RelatorioBarra extends Component {
 
   mensal = () => {
     const inicioMes = moment().format('YYYY-MM-01');
-    const fimMes = moment()
-      .endOf('month')
-      .format('YYYY-MM-DD');
+    const fimMes = moment().endOf('month').format('YYYY-MM-DD');
     this.setState({
       datai: inicioMes,
       dataf: fimMes
@@ -68,50 +64,35 @@ export default class RelatorioBarra extends Component {
 
   render() {
     return (
-      <div className="relat-bar">
-        <Col md={3} className="relat-data">
-          <input
-            type="date"
-            id="datai"
-            className="form-control"
-            onChange={this.mudaDatai}
-            value={this.state.datai}
-          />
-        </Col>
-        <Col md={3} className="relat-data">
-          <input
-            type="date"
-            id="dataf"
-            className="form-control"
-            onChange={this.mudaDataf}
-            value={this.state.dataf}
-          />
-        </Col>
-        <Col md={2} className="relat-button">
-          <Button
-            color="primary"
-            className="form-control"
-            onClick={this.diario}>
-            Diário
-          </Button>
-        </Col>
-        <Col md={2} className="relat-button">
-          <Button
-            color="success"
-            className="form-control"
-            onClick={this.semanal}>
-            Semanal
-          </Button>
-        </Col>
-        <Col md={2} className="relat-button">
-          <Button
-            color="warning"
-            className="form-control"
-            onClick={this.mensal}>
-            Mensal
-          </Button>
-        </Col>
-      </div>
+      <S.wrap>
+        <input
+          type='date'
+          id='datai'
+          className='form-control'
+          onChange={this.mudaDatai}
+          value={this.state.datai}
+        />
+
+        <input
+          type='date'
+          id='dataf'
+          className='form-control'
+          onChange={this.mudaDataf}
+          value={this.state.dataf}
+        />
+
+        <Button color='primary' className='form-control' onClick={this.diario}>
+          Diário
+        </Button>
+
+        <Button color='success' className='form-control' onClick={this.semanal}>
+          Semanal
+        </Button>
+
+        <Button color='warning' className='form-control' onClick={this.mensal}>
+          Mensal
+        </Button>
+      </S.wrap>
     );
   }
 }
