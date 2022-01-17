@@ -20,14 +20,3 @@ td:first-child,
 th:first-child {
   width: 50%;
 }
-
-.relat-dev__total {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  padding: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  color: green;
-  background-color: #ffffff;
-}

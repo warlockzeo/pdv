@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import AddSearchBar from '../AddSearchBar';
 import Produtos from '../Produtos';
 
-import FormProdutos from '../../components/FormProdutos';
+import FormProdutos from '../FormProdutos';
 
 import './styles.css';
 

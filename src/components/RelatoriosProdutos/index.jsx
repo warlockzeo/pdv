@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
-import { MoedaReal } from '../../utils';
-import EventoRelatorioProdutos from '../../components/EventoRelatorioProdutos';
+import React, { Component } from 'react';
+import EventoRelatorioProdutos from '../EventoRelatorioProdutos';
+import Total from '../Total';
 
 export default class RelatoriosProdutos extends Component {
   render() {
@@ -9,11 +9,9 @@ export default class RelatoriosProdutos extends Component {
           .map((evento) => parseFloat(evento.subTotal))
           .reduce((a, b) => a + b)
       : '0,00';
-    const mostra = this.props.dados.map((evento) => (
-      <EventoRelatorioProdutos key={evento.id} evento={evento} />
-    ));
+
     return (
-      <Fragment>
+      <>
         <table className='table table-sm table-hover'>
           <thead className='thead-dark'>
             <tr>
@@ -24,12 +22,14 @@ export default class RelatoriosProdutos extends Component {
               <th className='text-right'>Subtotal</th>
             </tr>
           </thead>
-          <tbody>{mostra}</tbody>
+          <tbody>
+            {this.props.dados.map((evento) => (
+              <EventoRelatorioProdutos key={evento.id} evento={evento} />
+            ))}
+          </tbody>
         </table>
-        <div className='relat__total'>
-          <MoedaReal valor={total} />
-        </div>
-      </Fragment>
+        <Total value={total} />
+      </>
     );
   }
 }

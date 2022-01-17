@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MoedaReal } from '../../utils';
+import { MoedaReal, MonetaryFormat } from '../../utils';
 import { hoje, amanha } from '../../constants';
 
 import './styles.css';
@@ -20,9 +20,7 @@ const FechamentoCaixa = () => {
       method: 'POST',
       body: JSON.stringify({
         cliente: 0,
-        pago: parseFloat(this.state.input)
-          .toFixed(2)
-          .replace(',', '.'),
+        pago: MonetaryFormat(this.state.input),
         formaPg: 'Dinheiro',
         operacao: 'Fechamento de caixa'
       })
@@ -69,36 +67,35 @@ const FechamentoCaixa = () => {
       : vendas[0].pago
     : '0,00';
 
-  const mostra = isFechado ? (
-    <div className="fechamento__aviso">Fechamento já realizado hoje</div>
-  ) : (
-    <form
-      onSubmit={onSubmit}
-      name="formFechamento"
-      className="fechamento__form">
-      <label className="fechamento__label">Valor do troco de amanhã:</label>
-      <input
-        className="form-control fechamento__input"
-        type="text"
-        placeholder="Valor"
-        onChange={atualizaInput}
-        value={input}
-      />
-      <button className="btn btn-success form-control">Fechar caixa</button>
-    </form>
-  );
   return (
-    <div className="fechamento container">
-      <div className="text-center">
+    <div className='fechamento container'>
+      <div className='text-center'>
         <h2>ATENÇÃO!</h2>O valor não pode ser corrigido e <br />
         nenhuma venda será realizada após fechamento do caixa.
       </div>
 
-      <div className="fechamento__saldo">
+      <div className='fechamento__saldo'>
         Saldo do caixa de hoje: <MoedaReal valor={total} />
       </div>
 
-      {mostra}
+      {isFechado ? (
+        <div className='fechamento__aviso'>Fechamento já realizado hoje</div>
+      ) : (
+        <form
+          onSubmit={onSubmit}
+          name='formFechamento'
+          className='fechamento__form'>
+          <label className='fechamento__label'>Valor do troco de amanhã:</label>
+          <input
+            className='form-control fechamento__input'
+            type='text'
+            placeholder='Valor'
+            onChange={atualizaInput}
+            value={input}
+          />
+          <button className='btn btn-success form-control'>Fechar caixa</button>
+        </form>
+      )}
     </div>
   );
 };

@@ -1,15 +1,11 @@
 import React from 'react';
-import { MoedaReal } from '../../utils';
-import EventoRelatorioVendas from '../../components/EventoRelatorioVendas';
+import EventoRelatorioVendas from '../EventoRelatorioVendas';
+import Total from '../Total';
 
 const RelatorioVendas = ({ dados }) => {
   const total = dados.length
     ? dados.map((evento) => parseFloat(evento.pago)).reduce((a, b) => a + b)
     : '0,00';
-
-  const mostra = dados.map((evento) => (
-    <EventoRelatorioVendas key={evento.id} evento={evento} />
-  ));
 
   return (
     <>
@@ -25,11 +21,13 @@ const RelatorioVendas = ({ dados }) => {
             <th>Valor Recebido</th>
           </tr>
         </thead>
-        <tbody>{mostra}</tbody>
+        <tbody>
+          {dados.map((evento) => (
+            <EventoRelatorioVendas key={evento.id} evento={evento} />
+          ))}
+        </tbody>
       </table>
-      <div className='relat__total'>
-        <MoedaReal valor={total} />
-      </div>
+      <Total value={total} />
     </>
   );
 };

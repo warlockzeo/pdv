@@ -24,10 +24,8 @@ class TelaProdutos extends Component {
     fetch(`http://pdv/gravar/produtos/`, {
       method: 'POST',
       body: JSON.stringify({
-        codBarra: produto.codBarra,
-        descr: produto.descr,
-        preco: produto.preco.replace(',', '.'),
-        estoque: produto.estoque
+        ...produto,
+        preco: produto.preco.replace(',', '.')
       })
     })
       .then((response) => response.json())
@@ -42,11 +40,8 @@ class TelaProdutos extends Component {
     fetch(`http://pdv/atualizar/produtos/`, {
       method: 'POST',
       body: JSON.stringify({
-        id: produto.id,
-        codBarra: produto.codBarra,
-        descr: produto.descr,
-        preco: produto.preco.replace(',', '.'),
-        estoque: produto.estoque
+        ...produto,
+        preco: produto.preco.replace(',', '.')
       })
     })
       .then((response) => response.json())

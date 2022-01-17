@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react';
 import RelatoriosProdutos from '../../components/RelatoriosProdutos';
 import RelatorioBarra from '../../components/RelatorioBarra';
 
-import './styles.css';
-
 export default class TelaRelatorioProdutos extends Component {
   state = {
     produtos: [],
@@ -50,6 +48,7 @@ export default class TelaRelatorioProdutos extends Component {
       <Fragment>
         <RelatorioBarra
           datai={this.state.datai}
+          dataf={this.state.dataf}
           mudaDatai={this.mudaDatai}
           mudaDataf={this.mudaDataf}
         />

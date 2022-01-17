@@ -26,11 +26,7 @@ const SearchProdutos = (props) => {
     loadProducts();
   }, []);
 
-  return (
-    <>
-      <Autocomplete suggestions={produtos} />
-    </>
-  );
+  return <Autocomplete suggestions={produtos} />;
 };
 
 export default SearchProdutos;

@@ -3,6 +3,7 @@ import { MoedaReal } from '../../utils';
 
 const EventoRelatorioDevedores = ({ evento }) => {
   const { nome, endereco, fone, saldo } = evento;
+
   return (
     <tr>
       <td className='text-left'>{nome}</td>

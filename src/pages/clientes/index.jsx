@@ -39,14 +39,8 @@ const TelaClientes = () => {
     fetch(`http://pdv/gravar/clientes/`, {
       method: 'POST',
       body: JSON.stringify({
-        nome: cliente.nome,
-        endereco: cliente.endereco,
-        cpf: cliente.cpf,
-        rg: cliente.rg,
-        fone: cliente.fone,
-        saldo: cliente.saldo.replace(',', '.'),
-        dataSaldo: cliente.dataSaldo,
-        complemento: cliente.complemento
+        ...cliente,
+        saldo: cliente.saldo.replace(',', '.')
       })
     })
       .then((response) => response.json())
@@ -61,15 +55,8 @@ const TelaClientes = () => {
     fetch(`http://pdv/atualizar/clientes/`, {
       method: 'POST',
       body: JSON.stringify({
-        id: cliente.id,
-        nome: cliente.nome,
-        endereco: cliente.endereco,
-        cpf: cliente.cpf,
-        rg: cliente.rg,
-        fone: cliente.fone,
-        saldo: cliente.saldo.replace(',', '.'),
-        dataSaldo: cliente.dataSaldo,
-        complemento: cliente.complemento
+        ...cliente,
+        saldo: cliente.saldo.replace(',', '.')
       })
     })
       .then((response) => response.json())
@@ -128,26 +115,28 @@ const TelaClientes = () => {
     carregaClientes();
   }, []);
 
-  const mostra = historicoOpen ? (
-    <HistoricoCliente
-      cliente={clienteAtual}
-      historico={historico}
-      itensVenda={itensVenda}
-      mostraItens={getItensVenda}
-      voltar={lista}
-    />
-  ) : (
-    <ListaClientes
-      dados={clientes}
-      gravar={gravar}
-      atualizar={atualizar}
-      excluir={excluir}
-      historico={getHistorico}
-      atualizaSaldo={atualizaSaldo}
-    />
+  return (
+    <div className='tela-clientes'>
+      {historicoOpen ? (
+        <HistoricoCliente
+          cliente={clienteAtual}
+          historico={historico}
+          itensVenda={itensVenda}
+          mostraItens={getItensVenda}
+          voltar={lista}
+        />
+      ) : (
+        <ListaClientes
+          dados={clientes}
+          gravar={gravar}
+          atualizar={atualizar}
+          excluir={excluir}
+          historico={getHistorico}
+          atualizaSaldo={atualizaSaldo}
+        />
+      )}
+    </div>
   );
-
-  return <div className='tela-clientes'>{mostra}</div>;
 };
 
 export default TelaClientes;

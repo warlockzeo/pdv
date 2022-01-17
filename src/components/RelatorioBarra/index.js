@@ -1,98 +1,67 @@
-import React, { Component } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Button } from 'reactstrap';
 import { hoje } from '../../constants';
 
 import { RelatorioBarra as S } from './styles';
 
-export default class RelatorioBarra extends Component {
-  state = {
-    datai: hoje,
-    dataf: hoje
+const RelatorioBarra = ({ datai, dataf, mudaDatai, mudaDataf }) => {
+  const diario = () => {
+    mudaDatai(hoje);
+    mudaDataf('');
   };
 
-  mudaDatai = (e) => {
-    this.setState({
-      datai: e.currentTarget.value
-    });
-    this.props.mudaDatai(e.currentTarget.value);
-  };
-
-  mudaDataf = (e) => {
-    this.setState({
-      dataf: e.currentTarget.value
-    });
-    this.props.mudaDataf(e.currentTarget.value);
-  };
-
-  diario = () => {
-    this.setState({
-      datai: hoje,
-      dataf: hoje
-    });
-    this.props.mudaDatai(hoje);
-    this.props.mudaDataf('');
-  };
-
-  semanal = () => {
+  const semanal = () => {
     const domingo = moment().startOf('week').format('YYYY-MM-DD');
     const sabado = moment().endOf('week').format('YYYY-MM-DD');
-    this.setState({
-      datai: domingo,
-      dataf: sabado
-    });
 
-    this.props.mudaDatai(domingo);
-    this.props.mudaDataf(sabado);
+    mudaDatai(domingo);
+    mudaDataf(sabado);
   };
 
-  mensal = () => {
+  const mensal = () => {
     const inicioMes = moment().format('YYYY-MM-01');
     const fimMes = moment().endOf('month').format('YYYY-MM-DD');
-    this.setState({
-      datai: inicioMes,
-      dataf: fimMes
-    });
 
-    this.props.mudaDatai(inicioMes);
-    this.props.mudaDataf(fimMes);
+    mudaDatai(inicioMes);
+    mudaDataf(fimMes);
   };
 
-  componentDidMount() {
-    this.props.mudaDatai(hoje);
-  }
+  // useEffect(() => {
+  //   mudaDatai(hoje);
+  // }, []);
 
-  render() {
-    return (
-      <S.wrap>
-        <input
-          type='date'
-          id='datai'
-          className='form-control'
-          onChange={this.mudaDatai}
-          value={this.state.datai}
-        />
+  return (
+    <S.wrap>
+      <input
+        type='date'
+        id='datai'
+        className='form-control'
+        onChange={mudaDatai}
+        value={datai || hoje}
+      />
 
-        <input
-          type='date'
-          id='dataf'
-          className='form-control'
-          onChange={this.mudaDataf}
-          value={this.state.dataf}
-        />
+      <input
+        type='date'
+        id='dataf'
+        className='form-control'
+        onChange={mudaDataf}
+        value={dataf}
+      />
 
-        <Button color='primary' className='form-control' onClick={this.diario}>
-          Diário
-        </Button>
+      <Button color='primary' className='form-control' onClick={diario}>
+        Diário
+      </Button>
 
-        <Button color='success' className='form-control' onClick={this.semanal}>
-          Semanal
-        </Button>
+      <Button color='success' className='form-control' onClick={semanal}>
+        Semanal
+      </Button>
 
-        <Button color='warning' className='form-control' onClick={this.mensal}>
-          Mensal
-        </Button>
-      </S.wrap>
-    );
-  }
-}
+      <Button color='warning' className='form-control' onClick={mensal}>
+        Mensal
+      </Button>
+    </S.wrap>
+  );
+};
+
+export default RelatorioBarra;
