@@ -5,7 +5,9 @@ import { Total as S } from './styles';
 const Total = ({ value }) => {
   return (
     <S.wrap>
-      <MoedaReal valor={value} />
+      <div data-testid='total-green-value'>
+        <MoedaReal valor={value} />
+      </div>
     </S.wrap>
   );
 };

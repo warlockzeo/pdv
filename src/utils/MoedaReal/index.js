@@ -4,7 +4,6 @@ export const MoedaReal = ({ valor }) => {
       style: 'currency',
       currency: 'BRL'
     }); // R$1.231.230.123,23
-
     return valorFormatado;
   };
 

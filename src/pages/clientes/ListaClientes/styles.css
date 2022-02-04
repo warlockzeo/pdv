@@ -1,11 +1,6 @@
-.tela-clientes {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 tr {
   display: flex;
+  background-color: #fff;
 }
 
 thead {

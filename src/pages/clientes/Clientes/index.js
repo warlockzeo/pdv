@@ -2,8 +2,6 @@ import React from 'react';
 import { Button } from 'reactstrap';
 import { MoedaReal } from '../../../utils';
 
-import './styles.css';
-
 const Clientes = ({ cliente, historico, callbackParent, excluir, pagar }) => {
   const onClickAtualizar = async () => {
     await callbackParent({

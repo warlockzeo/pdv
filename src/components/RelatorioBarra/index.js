@@ -27,10 +27,6 @@ const RelatorioBarra = ({ datai, dataf, mudaDatai, mudaDataf }) => {
     mudaDataf(fimMes);
   };
 
-  // useEffect(() => {
-  //   mudaDatai(hoje);
-  // }, []);
-
   return (
     <S.wrap>
       <input

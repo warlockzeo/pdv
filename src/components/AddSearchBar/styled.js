@@ -7,6 +7,7 @@ export const AddSearchBar = {
     padding: 10px;
     display: flex;
     background-color: #ffffff;
+    z-index: -1;
 
     button {
       flex: 0;

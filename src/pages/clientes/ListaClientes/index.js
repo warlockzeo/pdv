@@ -116,7 +116,7 @@ class ListaClientes extends Component {
     return (
       <>
         <AddSearchBar busca={this.busca} onClickNovo={this.onClickNovo} />
-        <table className='table-clientes table table-sm table-hover'>
+        <table className='table table-sm table-hover'>
           <thead className='thead-dark'>
             <tr>
               <th>Nome</th>
