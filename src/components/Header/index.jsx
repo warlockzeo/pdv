@@ -7,14 +7,13 @@ import {
   Navbar,
   NavbarToggler,
   Nav,
-  NavItem,
   NavLink,
   DropdownToggle,
   DropdownMenu,
   UncontrolledDropdown
 } from 'reactstrap';
 
-import './styles.css';
+import { Header as S } from './styles';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,77 +39,66 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar expand='md' fixed='top' dark>
-      <Link to='/'>
-        <img
-          src='/assets/images/logo.jpg'
-          alt='DéjàVu Boutique'
-          className='logo-header'
-        />
-      </Link>
+    <S.wrap>
+      <Navbar expand='md' fixed='top' dark>
+        <Link to='/'>
+          <S.logo src='/assets/images/logo.jpg' alt='DéjàVu Boutique' />
+        </Link>
 
-      <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
-      <Collapse isOpen={isOpen} navbar>
-        <Nav className='ml-auto' navbar>
-          <NavItem>
+        <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className='ml-auto' navbar>
             <Link to='/clientes/' className={`nav-link`}>
               Clientes
             </Link>
-          </NavItem>
-          <NavItem>
+
             <Link to='/produtos/' className='nav-link'>
               Produtos
             </Link>
-          </NavItem>
-          <UncontrolledDropdown setActiveFromChild>
-            <DropdownToggle tag='a' className='nav-link' caret>
-              Relatórios
-            </DropdownToggle>
-            <DropdownMenu>
-              <Link to='/relatorioVendas/' className='dropdown-item'>
-                Relatório Vendas
-              </Link>
-              <Link to='/relatorioProdutos/' className='dropdown-item'>
-                Relatório Produtos
-              </Link>
-              <Link to='/relatorioDevedores/' className='dropdown-item'>
-                Relatório Devedores
-              </Link>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-          <NavItem>
+
+            <UncontrolledDropdown setActiveFromChild>
+              <DropdownToggle tag='a' className='nav-link' caret>
+                Relatórios
+              </DropdownToggle>
+              <DropdownMenu>
+                <Link to='/relatorioVendas/' className='dropdown-item'>
+                  Relatório Vendas
+                </Link>
+                <Link to='/relatorioProdutos/' className='dropdown-item'>
+                  Relatório Produtos
+                </Link>
+                <Link to='/relatorioDevedores/' className='dropdown-item'>
+                  Relatório Devedores
+                </Link>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+
             <Link to='/pdv/' className='nav-link'>
               PDV
             </Link>
-          </NavItem>
-          <UncontrolledDropdown setActiveFromChild>
-            <DropdownToggle tag='a' className='nav-link' caret>
-              Sistema
-            </DropdownToggle>
-            <DropdownMenu>
-              <Link
-                to='/back/'
-                className='
-                dropdown-item'>
-                Backup
-              </Link>
-              <Link to='/fechamentoCaixa/' className='dropdown-item'>
-                Fechamento de Caixa
-              </Link>
-              <Link
-                to='/segundaViaCupom/'
-                className='
-                dropdown-item'>
-                Segunda Via Cupom
-              </Link>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-          <NavItem>
+
+            <UncontrolledDropdown setActiveFromChild>
+              <DropdownToggle tag='a' className='nav-link' caret>
+                Sistema
+              </DropdownToggle>
+              <DropdownMenu>
+                <Link to='/back/' className='dropdown-item'>
+                  Backup
+                </Link>
+                <Link to='/fechamentoCaixa/' className='dropdown-item'>
+                  Fechamento de Caixa
+                </Link>
+                <Link to='/segundaViaCupom/' className='dropdown-item'>
+                  Segunda Via Cupom
+                </Link>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+
             <NavLink onClick={logout}>Logout</NavLink>
-          </NavItem>
-        </Nav>
-      </Collapse>
-    </Navbar>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </S.wrap>
   );
 };
 
