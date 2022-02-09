@@ -26,4 +26,15 @@ input {
 
 table {
   background-color: #fff;
+  margin-top: 55px;
+}
+
+thead {
+  top: 114px;
+  position: sticky;
+}
+
+tr {
+  display: flex;
+  background-color: #fff;
 }
