@@ -2,6 +2,8 @@ import React from 'react';
 import { Button } from 'reactstrap';
 import { MoedaReal } from '../../../utils';
 
+import { tags as S } from '../../../components/tags';
+
 const Clientes = ({ cliente, historico, callbackParent, excluir, pagar }) => {
   const onClickAtualizar = async () => {
     await callbackParent({
@@ -16,12 +18,12 @@ const Clientes = ({ cliente, historico, callbackParent, excluir, pagar }) => {
 
   return (
     <>
-      <td>{cliente.nome}</td>
+      <S.tdDescription>{cliente.nome}</S.tdDescription>
       <td className='d-xs-none'>{cliente.fone}</td>
       <td className='d-xs-none'>
         <MoedaReal valor={cliente.saldo} />
       </td>
-      <td>
+      <S.tdButtons>
         <Button
           color='success'
           data-toggle='modal'
@@ -49,7 +51,7 @@ const Clientes = ({ cliente, historico, callbackParent, excluir, pagar }) => {
           <span className='d-xs-none'>Excluir</span>{' '}
           <i className='fas fa-minus d-sm-none' />
         </Button>
-      </td>
+      </S.tdButtons>
     </>
   );
 };

@@ -23,3 +23,7 @@ input {
   border: 1px solid #ff00f7 !important;
   border-radius: 5px;
 }
+
+table {
+  background-color: #fff;
+}

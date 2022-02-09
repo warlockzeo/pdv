@@ -8,14 +8,17 @@ thead {
   position: sticky;
 }
 
-td,
+table {
+  margin-top: 55px;
+}
+
+/* td,
 th {
-  padding-left: 10px !important;
   flex: 1 !important;
-  display: flex !important;
+  padding-left: 10px !important;
   align-items: center !important;
 }
 
 td:last-child {
   justify-content: flex-end;
-}
+} */

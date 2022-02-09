@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import AddSearchBar from '../AddSearchBar';
-import Produtos from '../Produtos';
+import AddSearchBar from '../../../components/AddSearchBar';
+import Produto from '../Produto';
+import FormProdutos from '../../../components/FormProdutos';
 
-import FormProdutos from '../FormProdutos';
-
-import './styles.css';
+import { tags as T } from '../../../components/tags';
 
 class ListaProdutos extends Component {
   constructor(props) {
@@ -86,7 +85,7 @@ class ListaProdutos extends Component {
     const listaProdutos = lista.map((produto) => (
       <Fragment key={produto.id}>
         <tr onMouseOver={() => this.setState({ produtoAtual: produto })}>
-          <Produtos
+          <Produto
             produto={produto}
             callbackParent={(produto) => produtoGet(produto)}
             excluir={this.excluir}
@@ -101,10 +100,12 @@ class ListaProdutos extends Component {
         <table className='table-produtos table table-sm table-hover'>
           <thead className='thead-dark'>
             <tr>
-              <th className='text-left'>Descrição</th>
-              <th className='d-xs-none text-left'>Estoque</th>
-              <th className='d-xs-none text-right'>Preço</th>
-              <th></th>
+              <T.thDescription>Descrição</T.thDescription>
+              <T.thNumbers className='text-center d-xs-none'>
+                Estoque
+              </T.thNumbers>
+              <T.thNumbers className='text-center d-xs-none'>Preço</T.thNumbers>
+              <th style={{ width: 240 }}></th>
             </tr>
           </thead>
           <tbody>{listaProdutos}</tbody>

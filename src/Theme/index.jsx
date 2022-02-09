@@ -8,6 +8,7 @@ const theme = {
     lightBlue: '#AFDBD2',
     onyx: '#36313D'
   },
+
   fontSizes: {
     small: '1em',
     medium: '2em',

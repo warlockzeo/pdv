@@ -1,27 +1,19 @@
-import React, { Component } from 'react';
-import ListaProdutos from '../../components/ListaProdutos';
+import React, { useState, useEffect } from 'react';
+import ListaProdutos from './ListaProdutos';
 
-class TelaProdutos extends Component {
-  state = {
-    produtos: []
-  };
+const TelaProdutos = () => {
+  const [produtos, setProdutos] = useState([]);
 
-  carregaProdutos() {
+  const carregaProdutos = () => {
     fetch(`${process.env.REACT_APP_URLBASEAPI}exibir/produtos/`)
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({
-          produtos: responseJson
-        });
+        setProdutos(responseJson);
       });
-  }
+  };
 
-  componentDidMount() {
-    this.carregaProdutos();
-  }
-
-  gravar = (produto) => {
-    fetch(`http://pdv/gravar/produtos/`, {
+  const gravar = (produto) => {
+    fetch(`${process.env.REACT_APP_URLBASEAPI}gravar/produtos/`, {
       method: 'POST',
       body: JSON.stringify({
         ...produto,
@@ -31,13 +23,13 @@ class TelaProdutos extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.resp === 'ok') {
-          this.carregaProdutos();
+          carregaProdutos();
         }
       });
   };
 
-  atualizar = (produto) => {
-    fetch(`http://pdv/atualizar/produtos/`, {
+  const atualizar = (produto) => {
+    fetch(`${process.env.REACT_APP_URLBASEAPI}atualizar/produtos/`, {
       method: 'POST',
       body: JSON.stringify({
         ...produto,
@@ -47,35 +39,37 @@ class TelaProdutos extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.resp === 'ok') {
-          this.carregaProdutos();
+          carregaProdutos();
         }
       });
   };
 
-  excluir = (produto) => {
+  const excluir = (produto) => {
     if (window.confirm('Confirma exclusão?')) {
-      fetch(`http://pdv/apagar/produtos/${produto.produto}`)
+      fetch(
+        `${process.env.REACT_APP_URLBASEAPI}apagar/produtos/${produto.produto}`
+      )
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson.resp === 'ok') {
-            this.carregaProdutos();
+            carregaProdutos();
           }
         });
     }
   };
 
-  render() {
-    return (
-      <div className='tela-produtos'>
-        <ListaProdutos
-          dados={this.state.produtos}
-          gravar={this.gravar}
-          atualizar={this.atualizar}
-          excluir={this.excluir}
-        />
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    carregaProdutos();
+  }, []);
+
+  return (
+    <ListaProdutos
+      dados={produtos}
+      gravar={gravar}
+      atualizar={atualizar}
+      excluir={excluir}
+    />
+  );
+};
 
 export default TelaProdutos;
